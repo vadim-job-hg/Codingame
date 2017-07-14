@@ -18,7 +18,7 @@ while True:
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)
     if next_checkpoint_angle>90 or next_checkpoint_angle<-90:
-        trust = 0
+        trust = 20
     else:
         trust = 100
 

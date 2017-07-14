@@ -18,12 +18,14 @@ while True:
 
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)
+    avaliable_boost = True
     trust = 0
     if next_checkpoint_angle > 90 or next_checkpoint_angle < -90:
         trust = str(10)
     else:
-        if trust < 50:
+        if trust < 50 and avaliable_boost and next_checkpoint_dist > 1000:
             trust = 'BOOST'
+            avaliable_boost = False
         else:
             trust = str(100)
 
@@ -31,4 +33,4 @@ while True:
     # followed by the power (0 <= thrust <= 100)
     # i.e.: "x y thrust"
     print(str(next_checkpoint_x) + " " + str(next_checkpoint_y) + " " + trust)
-# result https://www.codingame.com/replay/246125257
+# https://www.codingame.com/replay/246137608

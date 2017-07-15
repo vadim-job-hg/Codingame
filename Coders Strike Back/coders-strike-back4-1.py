@@ -25,13 +25,16 @@ while True:
         trust = 'BOOST'
     elif abs_angle < 10:
         trust = str(100)
-    elif next_checkpoint_dist > 1000:
-        if abs_angle < 30:
+    elif next_checkpoint_dist > 3000:
+        if abs_angle < 90:
             trust = str(100)
         else:
             trust = str(0)
     else:
-        trust = str(int((1 - abs_angle / 180) * 100))
+        if abs_angle > 90:
+            trust = str(0)
+        else:
+            trust = str(int((1 - abs_angle / 180) * 100))
 
     # You have to output the target position
     # followed by the power (0 <= thrust <= 100)

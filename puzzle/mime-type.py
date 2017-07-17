@@ -11,16 +11,16 @@ for i in range(n):
     # ext: file extension
     # mt: MIME type.
     ext, mt = input().split()
-    dictionary[ext] = mt    
+    dictionary[ext.lower()] = mt    
 print(dictionary, file=sys.stderr)
 for i in range(q):
     fname = input()  # One file name per line.    
     print(fname, file=sys.stderr)
     farr = fname.split('.')
-    #print(farr[-1], file=sys.stderr)
+    print(farr[-1], file=sys.stderr)
     if len(farr)>1:
         try:
-            print(dictionary[farr[-1]])
+            print(dictionary[farr[-1].lower()])
         except KeyError:
             print("UNKNOWN")
         except IndexError:
@@ -35,4 +35,6 @@ for i in range(q):
 
 
 # For each of the Q filenames, display on a line the corresponding MIME type. If there is no corresponding type, then display UNKNOWN.
+
+
 

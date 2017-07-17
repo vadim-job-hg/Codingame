@@ -12,16 +12,24 @@ for i in range(n):
     # mt: MIME type.
     ext, mt = input().split()
     dictionary[ext] = mt    
+print(dictionary, file=sys.stderr)
 for i in range(q):
-    fname = input()  # One file name per line.
+    fname = input()  # One file name per line.    
+    print(fname, file=sys.stderr)
     farr = fname.split('.')
-    try:
-        print(dictionary[farr[1]])
-    except ValueError:
+    #print(farr[-1], file=sys.stderr)
+    if len(farr)>1:
+        try:
+            print(dictionary[farr[-1]])
+        except KeyError:
+            print("UNKNOWN")
+        except IndexError:
+            print("UNKNOWN")
+    else:
         print("UNKNOWN")
     #print(farr[1], file=sys.stderr)
     #print(dictionary.keys(), file=sys.stderr)
-    print(dictionary[farr[1]], file=sys.stderr)
+    #print(dictionary[farr[1]], file=sys.stderr)
 # Write an action using print
 # To debug: print("Debug messages...", file=sys.stderr)
 

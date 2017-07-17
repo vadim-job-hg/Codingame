@@ -1,3 +1,4 @@
+# https://www.codingame.com/ide/puzzle/mime-type
 import sys
 import math
 
@@ -14,11 +15,13 @@ for i in range(n):
 for i in range(q):
     fname = input()  # One file name per line.
     farr = fname.split('.')
-    if farr[1] and farr[1] in dictionary:
+    try:
         print(dictionary[farr[1]])
-    else:
+    except ValueError:
         print("UNKNOWN")
-
+    #print(farr[1], file=sys.stderr)
+    #print(dictionary.keys(), file=sys.stderr)
+    print(dictionary[farr[1]], file=sys.stderr)
 # Write an action using print
 # To debug: print("Debug messages...", file=sys.stderr)
 

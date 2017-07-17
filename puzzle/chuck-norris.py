@@ -22,6 +22,7 @@ last_num = ""
 strike = 0
 for letter in message:    
     nums = str(string2bits(letter))
+    nums = ("0"*(7-len(nums)))+nums
     print("NUMBERS: {0}".format(nums), file=sys.stderr)    
     for i in range(0, len(nums)):
         if last_num != nums[i]:

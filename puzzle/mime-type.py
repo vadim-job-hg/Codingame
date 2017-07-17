@@ -1,4 +1,3 @@
-# https://www.codingame.com/ide/puzzle/mime-type
 import sys
 import math
 
@@ -15,7 +14,7 @@ for i in range(n):
 for i in range(q):
     fname = input()  # One file name per line.
     farr = fname.split('.')
-    if farr[1] and dictionary[farr[1]]:
+    if farr[1] and farr[1] in dictionary:
         print(dictionary[farr[1]])
     else:
         print("UNKNOWN")

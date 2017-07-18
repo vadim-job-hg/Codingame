@@ -18,15 +18,6 @@ class Path():
         self.y = y
         self.trust = trust
 
-    def getX(self):
-        return self.x
-
-    def getY(self):
-        return self.y
-
-    def getTrust(self):
-        return self.trust
-
     def getString(self):
         return "{0} {1} {2}".format(self.x, self.y, self.trust)
 
@@ -92,4 +83,3 @@ while True:
     pod.getData()
     pod.calculatePath()
     pod.run()
-

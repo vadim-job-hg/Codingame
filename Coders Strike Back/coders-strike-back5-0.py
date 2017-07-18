@@ -66,7 +66,6 @@ class Pod():
         pass
 
     def _calculatePathParams(self):
-        self._calculateSpeed()
         if self.next_checkpoint_angle > 90 or self.next_checkpoint_angle < -90:
             thrust = 0
         else:
@@ -85,6 +84,7 @@ class Pod():
         return Path(self.next_checkpoint_x, self.next_checkpoint_y, thrust)
 
     def calculatePath(self):
+        self._calculateSpeed()
         self.path = self._calculatePathParams()
 
     def run(self):

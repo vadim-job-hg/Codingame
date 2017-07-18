@@ -36,6 +36,7 @@ class Pod():
     opponent_x = None
     opponent_y = None
     path = None
+    boost_not_used = True
 
     _path_points = []
     _current_speed = 0
@@ -66,9 +67,25 @@ class Pod():
 
     def _calculatePathParams(self):
         self._calculateSpeed()
+        if self.next_checkpoint_angle > 90 or self.next_checkpoint_angle < -90:
+            thrust = 0
+        else:
+            thrust = 100
+
+        if self.next_checkpoint_dist > 7000 and (-5 < self.next_checkpoint_angle < 5) and self.boost_not_used:
+            self.boost_not_used = False
+            thrust = "BOOST"
+
+        if self.next_checkpoint_dist < 2500:
+            thrust = 50
+
+        if self.next_checkpoint_dist < 1000:
+            thrust = 100
+
+        return Path(self.next_checkpoint_x, self.next_checkpoint_y, thrust)
 
     def calculatePath(self):
-        self.path = Path(self.next_checkpoint_x, self.next_checkpoint_y, "50")
+        self.path = self._calculatePathParams()
 
     def run(self):
         if self.path is not None:

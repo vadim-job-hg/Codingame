@@ -22,7 +22,7 @@ class Path():
         return "{0} {1} {2}".format(self.x, self.y, self.trust)
 
 
-class Coordinates():
+class CarState():
     pass
 
 

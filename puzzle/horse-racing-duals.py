@@ -9,7 +9,7 @@ n = int(input())
 for i in range(n):
     pi.append(int(input()))
 pi.sort()
-print(pi, file=sys.stderr)
+#print(pi, file=sys.stderr)
 
 min = 10000000
 for i in range(n-1):    

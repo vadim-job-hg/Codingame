@@ -1,5 +1,8 @@
 import sys
 import math
+#
+import numpy as np
+from inspect import currentframe
 
 
 def calc_distance(x, y, x2, y2):
@@ -28,15 +31,16 @@ class PathPoint():
 
 class Player():
     _title = ''
-    _x = 0
-    _y = 0
+    x = 1000
+    y = 1000
     speed = 0
+    vector = np.array([0, 0, 0])
 
     def __init__(self, title):
         self._title = title
 
     def setParams(self, x, y):
-        self.speed, self._x, self._y = calc_distance(x, y, self._x, self._y), x, y
+        self.speed, self.x, self.y = calc_distance(x, y, self.x, self.y), x, y
         print(self._title + ' speed: ' + str(self.speed), file=sys.stderr)
 
         # _vector = math.vector(0, 0)
@@ -53,7 +57,6 @@ class Player():
             boost_not_used = True
 
             _path_points = []
-            _current_speed = 0
             _all_path_points_known = False
             _current_taktik = "regular"
 
@@ -68,33 +71,48 @@ class Player():
                 self.next_checkpoint_angle = na
                 self.next_checkpoint_dist = nd
 
+            def _getTactick(self):
+                self._current_taktik = "regular"
+
             def _calculatePathParams(self):
-                if self.next_checkpoint_angle > 90 or self.next_checkpoint_angle < -90:
+                abs_angle = abs(self.next_checkpoint_angle)
+                if abs_angle > 90:
                     thrust = 0
+                elif abs_angle > 70:
+                    thrust = 25
+                elif abs_angle > 45:
+                    thrust = 50
                 else:
                     thrust = 100
 
-                if self.next_checkpoint_dist > 7000 and (-5 < self.next_checkpoint_angle < 5) and self.boost_not_used:
+                if self.next_checkpoint_dist > 4000 and (-5 < self.next_checkpoint_angle < 5) and self.boost_not_used:
                     self.boost_not_used = False
                     thrust = "BOOST"
-
-                if self.next_checkpoint_dist < 2500:
-                    if self.player.speed > 400:
+                if self.next_checkpoint_dist < 1000 and abs_angle < 20:
+                    thrust = 100
+                elif self.next_checkpoint_dist < 3500:
+                    if self.player.speed > 600 and abs_angle > 10:
                         thrust = 25
-                    elif self.player.speed > 300:
+                    elif self.player.speed > 400 and abs_angle > 20:
                         thrust = 50
-                    elif self.player.speed > 200:
+                    elif self.player.speed > 200 and abs_angle > 30:
                         thrust = 75
+                    elif self.player.speed > 50:
+                        thrust = 90
                     else:
                         thrust = 100
-                if self.next_checkpoint_dist < 1000:
-                    thrust = 100
-                if -5 < self.next_checkpoint_angle < 5 and self.player.speed < 200:
-                    thrust = 100
+
+                        # dist =  calc_distance(self.player.x, self.player.y, self.opponent.x, self.opponent.y)
+                # if 600>self.player.speed>300 and dist<1000:
+                #    thrust = "SHIELD"
+                # print(dist, file=sys.stderr)
+                # if self.next_checkpoint_angle==0:
+                #    thrust = 100
 
                 return self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, thrust)
 
             def calculatePath(self):
+                self._getTactick()
                 self._calculatePathParams()
 
             def run(self):

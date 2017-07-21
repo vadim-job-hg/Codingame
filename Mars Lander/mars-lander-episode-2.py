@@ -1,4 +1,3 @@
-# https://www.codingame.com/ide/puzzle/mars-lander-episode-2
 import sys
 import math
 
@@ -66,12 +65,14 @@ class LandingZone():
         if self._dir_mult != 0:
             if self._shutle.y - self._hightest_dot <500:
                 l_a = DANGER_LANDING_ANGLE
+                l_s = MAX_HSPEED_LANDING
             else:
                 l_a = FAST_LANDING_ANGLE
+                l_s = MAX_HSPEED_LANDING*2
             self._shutle.power = 4
-            if ((-self._dir_mult * self._shutle.h_speed) < MAX_HSPEED_LANDING*2):
+            if ((-self._dir_mult * self._shutle.h_speed) < l_s):
                 self._shutle.angle = int(self._dir_mult * l_a)
-            elif (-self._dir_mult * self._shutle.h_speed > MAX_HSPEED_LANDING*2 + 5):
+            elif (-self._dir_mult * self._shutle.h_speed > l_s + 5):
                 self._shutle.angle = -int(self._dir_mult * l_a)
             else:
                 self._shutle.angle = 0

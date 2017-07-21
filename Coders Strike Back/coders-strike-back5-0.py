@@ -22,11 +22,14 @@ class Path():
 
 
 class PathPoint():
-    _x = None
-    _y = None
+    x = None
+    y = None
 
     def __init__(self, x, y):
-        self._x, self.y = x, y
+        self.x, self.y = x, y
+
+    def isEqual(self, x, y):
+        return self.x == x and self.y == y
 
 
 class Player():
@@ -43,6 +46,7 @@ class Player():
         self.speed, self.x, self.y = calc_distance(x, y, self.x, self.y), x, y
         print(self._title + ' speed: ' + str(self.speed), file=sys.stderr)
 
+
         # _vector = math.vector(0, 0)
 
         class Pod():
@@ -55,9 +59,10 @@ class Player():
             next_checkpoint_angle = 0
             next_checkpoint_dist = 0
             boost_not_used = True
-
+            all_path_points_known = False
+            _lap = 1
             _path_points = []
-            _all_path_points_known = False
+            _pased = -1
             _current_taktik = "regular"
 
             # regular - simple tactick, shield - if we gonna crush, drift - drift untill speed 0, attack - lets attack enemy, round - vector calculation path
@@ -66,54 +71,67 @@ class Player():
                 ox, oy = [int(i) for i in input().split()]
                 self.player.setParams(x, y)
                 self.opponent.setParams(ox, oy)
-                self.next_checkpoint_x = nx
-                self.next_checkpoint_y = ny
-                self.next_checkpoint_angle = na
+                if not (self.next_checkpoint_x == nx and self.next_checkpoint_y == ny):
+                    if not (self.all_path_points_known):
+                        self.addPathPoint(nx, ny)
+                    self.next_checkpoint_x, self.next_checkpoint_y = nx, ny
+                    self._pased = self._pased + 1
+                self.next_checkpoint_angle = abs(na)
                 self.next_checkpoint_dist = nd
 
-            def _getTactick(self):
-                self._current_taktik = "regular"
-
-            def _calculatePathParams(self):
-                abs_angle = abs(self.next_checkpoint_angle)
-                if abs_angle > 90:
-                    thrust = 0
-                elif abs_angle > 70:
-                    thrust = 25
-                elif abs_angle > 45:
-                    thrust = 50
+            def addPathPoint(self, x, y):
+                if (len(self._path_points) > 0 and self._path_points[0].isEqual(x, y)):
+                    self.all_path_points_known = True
                 else:
-                    thrust = 100
+                    self._path_points.append(PathPoint(x, y))
 
-                if self.next_checkpoint_dist > 4000 and (-5 < self.next_checkpoint_angle < 5) and self.boost_not_used:
+            def _getTactick(self):
+                if self.all_path_points_known:
+                    self._current_taktik = "drift"
+                else:
+                    self._current_taktik = "regular"
+
+            def _regularPath(self):  # todo: vector calculation
+                thrust = 100
+                rad = math.radians(self.next_checkpoint_angle)
+                if self.next_checkpoint_dist > 6000 and self.next_checkpoint_angle and self.boost_not_used:
                     self.boost_not_used = False
                     thrust = "BOOST"
-                if self.next_checkpoint_dist < 1000 and abs_angle < 20:
-                    thrust = 100
-                elif self.next_checkpoint_dist < 3500:
-                    if self.player.speed > 600 and abs_angle > 10:
-                        thrust = 25
-                    elif self.player.speed > 400 and abs_angle > 20:
-                        thrust = 50
-                    elif self.player.speed > 200 and abs_angle > 30:
-                        thrust = 75
-                    elif self.player.speed > 50:
-                        thrust = 90
-                    else:
+                elif (self.next_checkpoint_angle < 90):
+                    perfectForce = self.next_checkpoint_dist * math.cos(rad) * 0.15
+                    if 1000 < self.next_checkpoint_dist < 2500:
+                        if self.player.speed > 150:
+                            thrust = 50
+                        elif self.player.speed > 100:
+                            thrust = 70
+                        elif self.player.speed > 50:
+                            thrust = 90
+                        else:
+                            thrust = 100
+                    elif (perfectForce > 100):
                         thrust = 100
+                    elif (perfectForce < 0):
+                        thrust = 5
+                    else:
+                        thrust = int(perfectForce)
+                else:
+                    thrust = 0
+                self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, thrust)
 
-                        # dist =  calc_distance(self.player.x, self.player.y, self.opponent.x, self.opponent.y)
-                # if 600>self.player.speed>300 and dist<1000:
-                #    thrust = "SHIELD"
-                # print(dist, file=sys.stderr)
-                # if self.next_checkpoint_angle==0:
-                #    thrust = 100
-
-                return self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, thrust)
+            def _driftPath(self):
+                if self.player.speed > 400:
+                    if (self.next_checkpoint_dist) > 2500:
+                        self._regularPath()
+                    else:
+                        pp_next = self._path_points[(self._pased + 1) % len(self._path_points)]
+                        self.path.setPath(pp_next.x, pp_next.y, 0)
+                else:
+                    self._regularPath()
 
             def calculatePath(self):
                 self._getTactick()
-                self._calculatePathParams()
+                # print("_"+self._current_taktik+"Path", file=sys.stderr)
+                getattr(self, "_" + self._current_taktik + "Path", "_regularPath")()
 
             def run(self):
                 if self.path is not None:

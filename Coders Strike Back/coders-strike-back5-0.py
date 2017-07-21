@@ -94,7 +94,7 @@ class Player():
             def _regularPath(self):  # todo: vector calculation
                 thrust = 100
                 rad = math.radians(self.next_checkpoint_angle)
-                if self.next_checkpoint_dist > 6000 and self.next_checkpoint_angle and self.boost_not_used:
+                if self.next_checkpoint_dist > 6000 and self.next_checkpoint_angle < 5 and self.boost_not_used:
                     self.boost_not_used = False
                     thrust = "BOOST"
                 elif (self.next_checkpoint_angle < 90):
@@ -111,7 +111,7 @@ class Player():
                     elif (perfectForce > 100):
                         thrust = 100
                     elif (perfectForce < 0):
-                        thrust = 5
+                        thrust = 0
                     else:
                         thrust = int(perfectForce)
                 else:
@@ -119,12 +119,12 @@ class Player():
                 self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, thrust)
 
             def _driftPath(self):
-                if self.player.speed > 400:
-                    if (self.next_checkpoint_dist) > 2500:
+                if self.player.speed > 300 or (self.next_checkpoint_dist < 1000 and self.player.speed > 200):
+                    if (self.next_checkpoint_dist) > 1000:
                         self._regularPath()
                     else:
                         pp_next = self._path_points[(self._pased + 1) % len(self._path_points)]
-                        self.path.setPath(pp_next.x, pp_next.y, 0)
+                        self.path.setPath(pp_next.x, pp_next.y, 1)
                 else:
                     self._regularPath()
 

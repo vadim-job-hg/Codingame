@@ -1,16 +1,5 @@
-lx,ly,initial_tx,initial_ty=[int(i)for i in input().split()]
-while int(input()):
- m=""
- if initial_ty<ly:
-  m="S"
-  initial_ty=initial_ty+1
- elif initial_ty>ly:
-  m="N"
-  initial_ty=initial_ty-1
- if initial_tx<lx:
-  m=m+"E"
-  initial_tx=initial_tx+1
- elif initial_tx>lx:
-  m=m+"W"
-  initial_tx=initial_tx-1
-print(m)
+x,y,z,w=[int(i)for i in input().split()]
+while 1:
+ m,w=["S",w+1] if w<y else ["N",w-1] if w>y else ["",w]
+ m,z=[m+"E",z+1] if z<x else [m+"W",z-1] if z>x else [m,z] 
+ print m

@@ -164,7 +164,6 @@ class Player():
         self.set_direction(self.x, self.y, x, y)
         self.speed, self.x, self.y = calc_distance(x, y, self.x, self.y), x, y
         print(self._title + ' speed: ' + str(self.speed), file=sys.stderr)
-
         def set_direction(self, x1, y1, x2, y2):
             self._direction = {"from": {"x": x1, "y": y1}, "to": {"x": x2, "y": y2}}
 

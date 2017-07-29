@@ -9,6 +9,6 @@ while 1:
  if f==z or f==-1:
   p=(W,B)[(p>s and d[:1]=='R')or(p<s and d[:1]=='L')]
  else:
-  posi=e[f]
-  p=(W,B)[(p>posi and d[:1]=='R')or(p<posi and d[:1]=='L')]
+  I=e[f]
+  p=(W,B)[(p>I and d[:1]=='R')or(p<I and d[:1]=='L')]
  print(p)

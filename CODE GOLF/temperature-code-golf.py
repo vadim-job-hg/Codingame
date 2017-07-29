@@ -7,7 +7,7 @@ while 1:
  f,p,d=input().split()
  f,p=int(f),int(p)
  if f==z or f==-1:
-  p=(W,B)[(p>s and d[:1]=='R')or(p<s and d[:1]=='L')]
+  y=(W,B)[(p>s and d[:1]=='R')or(p<s and d[:1]=='L')]
  else:
-  p=(W,B)[(p>e[f] and d[:1]=='R')or(p<e[f] and d[:1]=='L')]
- print(p)
+  y=(W,B)[(p>e[f] and d[:1]=='R')or(p<e[f] and d[:1]=='L')]
+ print(y)

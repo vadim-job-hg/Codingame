@@ -10,5 +10,5 @@ while 1:
   p = (W, B)[(clone_pos>exit_pos and direction=='RIGHT')or(clone_pos<exit_pos and direction=='LEFT')]
  else:
   posi = elv[clone_floor]
-  p = ("WAIT", 'BLOCK')[(clone_pos>posi and direction=='RIGHT') or (clone_pos<posi and direction=='LEFT')]
+  p = (W, B)[(clone_pos>posi and direction=='RIGHT') or (clone_pos<posi and direction=='LEFT')]
  print(p)

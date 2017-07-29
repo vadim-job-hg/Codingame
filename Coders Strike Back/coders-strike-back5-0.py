@@ -123,10 +123,6 @@ class Vector(Point):
         raise TypeError
 
 
-def calc_distance(x, y, x2, y2):
-    return math.sqrt(((x2 - x) ** 2) + ((y2 - y) ** 2))
-
-
 class Path():
     x = None
     y = None
@@ -155,89 +151,116 @@ class Player():
     x = 1000
     y = 1000
     speed = 0
-    _direction = {"from": {"x": 0, "y": 0}, "to": {"x": 0, "y": 0}}
+    vector = None
 
     def __init__(self, title):
         self._title = title
 
     def setParams(self, x, y):
         self.set_direction(self.x, self.y, x, y)
-        self.speed, self.x, self.y = calc_distance(x, y, self.x, self.y), x, y
+        self.speed, self.x, self.y = self.set_direction(self.x, self.y, x, y), x, y
         print(self._title + ' speed: ' + str(self.speed), file=sys.stderr)
 
-        def set_direction(self, x1, y1, x2, y2):
-            self._direction = {"from": {"x": x1, "y": y1}, "to": {"x": x2, "y": y2}}
+    def set_direction(self, x1, y1, x2, y2):
+        self.vector = {'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2}
+        # print(self.vector, file=sys.stderr)
 
-    class Pod():
-        player = Player('player')
-        opponent = Player('oponent')
-        path = Path()
 
-        next_checkpoint_x = None
-        next_checkpoint_y = None
-        next_checkpoint_angle = 0
-        next_checkpoint_dist = 0
-        boost_not_used = True
-        all_path_points_known = False
-        _lap = 1
-        _path_points = []
-        _pased = -1
-        _current_taktik = "regular"
+class Pod():
+    player = Player('player')
+    opponent = Player('oponent')
+    path = Path()
 
-        # regular - simple tactick, shield - if we gonna crush, drift - drift untill speed 0, attack - lets attack enemy, round - vector calculation path
-        def getData(self):
-            x, y, nx, ny, nd, na = [int(i) for i in input().split()]
-            ox, oy = [int(i) for i in input().split()]
-            self.player.setParams(x, y)
-            self.opponent.setParams(ox, oy)
-            if not (self.next_checkpoint_x == nx and self.next_checkpoint_y == ny):
-                if not (self.all_path_points_known):
-                    self.addPathPoint(nx, ny)
-                self.next_checkpoint_x, self.next_checkpoint_y = nx, ny
-                self._pased = self._pased + 1
-            self.next_checkpoint_angle = abs(na)
-            self.next_checkpoint_dist = nd
+    next_checkpoint_x = None
+    next_checkpoint_y = None
+    next_checkpoint_angle = 0
+    next_checkpoint_dist = 0
+    boost_not_used = True
+    all_path_points_known = False
+    _lap = 1
+    _path_points = []
+    _pased = -1
+    _current_taktik = "regular"
 
-        def addPathPoint(self, x, y):
-            if (len(self._path_points) > 0 and self._path_points[0].isEqual(x, y)):
-                self.all_path_points_known = True
-            else:
-                self._path_points.append(PathPoint(x, y))
+    # regular - simple tactick, shield - if we gonna crush, drift - drift untill speed 0, attack - lets attack enemy, round - vector calculation path
+    def getData(self):
+        x, y, nx, ny, nd, na = [int(i) for i in input().split()]
+        ox, oy = [int(i) for i in input().split()]
+        self.player.setParams(x, y)
+        self.opponent.setParams(ox, oy)
+        if not (self.next_checkpoint_x == nx and self.next_checkpoint_y == ny):
+            if not (self.all_path_points_known):
+                self.addPathPoint(nx, ny)
+            self.next_checkpoint_x, self.next_checkpoint_y = nx, ny
+            self._pased = self._pased + 1
+        self.next_checkpoint_angle = abs(na)
+        self.next_checkpoint_dist = nd
 
-        def _getTactick(self):
-            # todo check shield
-            if self.all_path_points_known:
-                # todo: check if drift posible
-                self._current_taktik = "regular"
-            else:
-                self._current_taktik = "regular"
+    def addPathPoint(self, x, y):
+        if (len(self._path_points) > 0 and self._path_points[0].isEqual(x, y)):
+            self.all_path_points_known = True
+        else:
+            self._path_points.append(PathPoint(x, y))
 
-        def _regularPath(self):  # todo: vector calculation
-            if (self.next_checkpoint_angle > 90):
-                self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, 0)
-            # todo: or last
-            elif (self.next_checkpoint_dist > 6000 and self.next_checkpoint_angle < 5 and self.boost_not_used):
-                self.boost_not_used = False
-                self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, "BOOST")
-            else:
-                self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, 100)
-                # Vectors Logik starts from here
+    def _getTactick(self):
+        # todo check shield
+        if self.all_path_points_known:
+            # todo: check if drift posible
+            self._current_taktik = "regular"
+        else:
+            self._current_taktik = "regular"
 
-        def _driftPath(self):
-            pass
+    def _regularPath(self):  # todo: vector calculation
+        if (self.next_checkpoint_angle > 90):
+            self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, 0)
+        # todo: or last
+        elif (self.next_checkpoint_dist > 6000 and self.next_checkpoint_angle < 5 and self.boost_not_used):
+            self.boost_not_used = False
+            self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, "BOOST")
+        else:
+            thrust = 100
+            if self.next_checkpoint_dist < 2500:
+                thrust = 50
 
-        def calculatePath(self):
-            self._getTactick()
-            getattr(self, "_" + self._current_taktik + "Path", "_regularPath")()
+            if self.next_checkpoint_dist < 1000:
+                thrust = 100
 
-        def run(self):
-            if self.path is not None:
-                print(self.path.getString())
-            else:
-                raise Exception('OOOPS!')
+            x, y = self.correctPath()
 
-    pod = Pod()
-    while True:
-        pod.getData()
-        pod.calculatePath()
-        pod.run()
+            self.path.setPath(x, y, thrust)
+            # Vectors Logik starts from here
+
+    def correctPath(self):
+        from_p = Vector(self.player.vector['x1'], self.player.vector['y1'], 0)
+        to_p = Vector(self.player.vector['x2'], self.player.vector['y2'], 0)
+        movement_vector = from_p.substract(to_p)  # .multiply(self.next_checkpoint_dist)
+
+        print(movement_vector, file=sys.stderr)
+        target_vector = Vector(self.next_checkpoint_x, self.next_checkpoint_y, 0)
+        if movement_vector.x > 10000:
+            corection_vector = target_vector
+        else:
+            corection_vector = target_vector.sum(movement_vector.multiply(-1))
+        # print(movement_vector, file=sys.stderr)
+        # print(self.next_checkpoint_x, self.next_checkpoint_y, file=sys.stderr)
+        return [int(corection_vector.x), int(corection_vector.y)]
+
+    def _driftPath(self):
+        pass
+
+    def calculatePath(self):
+        self._getTactick()
+        getattr(self, "_" + self._current_taktik + "Path", "_regularPath")()
+
+    def run(self):
+        if self.path is not None:
+            print(self.path.getString())
+        else:
+            raise Exception('OOOPS!')
+
+
+pod = Pod()
+while True:
+    pod.getData()
+    pod.calculatePath()
+    pod.run()

@@ -7,20 +7,8 @@ while 1:
  clone_floor, clone_pos, direction = input().split()
  clone_floor, clone_pos = int(clone_floor), int(clone_pos)
  if clone_floor==exit_floor or clone_floor==-1 :
-  #p = ()[]
-  if clone_pos>exit_pos and direction=='RIGHT':
-   p ='BLOCK'
-  elif clone_pos<exit_pos and direction=='LEFT':
-   p = 'BLOCK'
-  else:
-   p = "WAIT"
+  p = ("WAIT", 'BLOCK')[(clone_pos>exit_pos and direction=='RIGHT')or(clone_pos<exit_pos and direction=='LEFT')]
  else:
-  if nb_floors>0:
-   posi=elv[clone_floor]
-   if clone_pos>posi and direction=='RIGHT':
-    p = 'BLOCK'
-   elif clone_pos<posi and direction=='LEFT':
-    p = 'BLOCK'
-   else:
-    p ="WAIT"
+  posi = elv[clone_floor]
+  p = ("WAIT", 'BLOCK')[(clone_pos>posi and direction=='RIGHT') or (clone_pos<posi and direction=='LEFT')]
  print(p)

@@ -148,7 +148,7 @@ class Area():
     def __init__(self):
         self.laps = int(input())
         self.checkpoint_count = int(input())
-        for i in range(checkpoint_count):
+        for i in range(self.checkpoint_count):
             checkpoint_x, checkpoint_y = [int(j) for j in input().split()]
             self.checkpoints.append({'x': checkpoint_x, 'y': checkpoint_y})
 
@@ -190,11 +190,11 @@ class Act():
 
     def get_players_data(self):
         for i in range(CARS_COUNT):
-            self.players.scan_data()
+            self.players[i].scan_data()
 
     def get_oponents_data(self):
         for i in range(CARS_COUNT):
-            self.opponents.scan_data()
+            self.opponents[i].scan_data()
 
     def run(self):
         pass
@@ -205,4 +205,4 @@ action.create_area_map()
 while True:
     action.get_players_data()
     action.get_oponents_data()
-    actiom.run()
+    action.run()

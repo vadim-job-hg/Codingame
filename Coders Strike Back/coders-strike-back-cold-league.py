@@ -152,13 +152,26 @@ class Area():
             checkpoint_x, checkpoint_y = [int(j) for j in input().split()]
             self.checkpoints.append({'x': checkpoint_x, 'y': checkpoint_y})
 
+    def get_checkpoint_by_id(self, i):
+        return self.checkpoints[i]
+
+    def get_laps_count(self):
+        return self.laps
+
+    def get_checkpoint_count(self):
+        return self.checkpoint_count
+
 
 class Player():
     _title = ''
-    x = 1000
-    y = 1000
+    x = int(X_MAX / 2)
+    y = int(Y_MAX / 2)
+    vx = vy = angle = next_check_point_id = 0
 
-    calculated_vector = None
+    boost_not_used = True
+    calculated_skidding_vector = None
+    calculated_path = Path()
+    calculated_lap = 0
 
     def __init__(self, title):
         self._title = title
@@ -170,20 +183,46 @@ class Player():
         # vy: y speed of your pod
         # angle: angle of your pod
         # next_check_point_id: next check point id of your pod
+        from_x, from_y = self.x, self.y
         self.x, self.y, self.vx, self.vy, self.angle, self.next_check_point_id = [int(j) for j in input().split()]
+        self.calculated_skidding_vector = Vector(from_x, from_y, 0).substract(
+            Vector(self.x, self.y, 0))  # .multiply(self.next_checkpoint_dist)
+
+    def calculate_path(self, area):
+        angle_abs = abs(self.angle)
+        next_checkpoint = area.get_checkpoint_by_id(self.next_check_point_id)
+        laps_count = area.get_laps_count()
+        checkpoint_count = area.get_checkpoint_count()
+
+        if (angle_abs > 90):
+            self.path.set_path(next_checkpoint.x, next_checkpoint.y, 0)
+        elif ((self.next_checkpoint_dist > 6000 or (
+                checkpoint_count == self.next_check_point_id and laps_count == self.calculated_lap)) and angle_abs < 5 and self.boost_not_used):
+            self.boost_not_used = False
+            self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, "BOOST")
+        else:
+            thrust = 100
+            if self.next_checkpoint_dist < 2500:
+                thrust = 50
+
+            if self.next_checkpoint_dist < 1000:
+                thrust = 100
+
+            x, y = self.correctPath()
+
+            self.path.setPath(x, y, thrust)
+            # Vectors Logik starts from here
 
 
 class Act():
     players = []
     opponents = []
-    paths = []
     area = None
 
     def __init__(self):
         for i in range(CARS_COUNT):
             self.opponents.append(Player('Opponent#' + str(i)))
             self.players.append(Player('Player#' + str(i)))
-            self.paths.append(Path())
 
     def create_area_map(self):
         self.area = Area()
@@ -196,8 +235,13 @@ class Act():
         for i in range(CARS_COUNT):
             self.opponents[i].scan_data()
 
+    def calculate_path(self):
+        for i in range(CARS_COUNT):
+            self.players[i].calculate_path(self.area)
+
     def run(self):
-        pass
+        for i in range(CARS_COUNT):
+            self.players[i].calculated_path.get_string()
 
 
 action = Act()
@@ -205,4 +249,6 @@ action.create_area_map()
 while True:
     action.get_players_data()
     action.get_oponents_data()
+    action.calculate_path()
     action.run()
+

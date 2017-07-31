@@ -1,5 +1,10 @@
+# https://www.codingame.com/ide/puzzle/coders-strike-back
 import sys
 import math
+
+X_MAX = 16000
+Y_MAX = 9000
+CARS_COUNT = 2
 
 
 class Point(object):
@@ -29,7 +34,7 @@ class Point(object):
 class Vector(Point):
     """ Vector class: Represents a vector in the x, y, z space. """
 
-    def __init__(self, x, y, z):
+    def __init__(self, x, y, z=0):
         self.vector = [x, y, z]
         super(Vector, self).__init__(x, y, z)
 
@@ -128,93 +133,71 @@ class Path():
     y = None
     trust = None
 
-    def setPath(self, x, y, trust):
+    def set_path(self, x, y, trust):
         self.x, self.y, self.trust = x, y, trust
 
-    def getString(self):
+    def get_string(self):
         return "{0} {1} {2}".format(self.x, self.y, self.trust)
 
 
-class PathPoint():
-    x = None
-    y = None
+class Area():
+    checkpoints = []
+    checkpoint_count = 0
+    laps = 0
 
-    def __init__(self, x, y):
-        self.x, self.y = x, y
+    def __init__(self):
+        self.laps = int(input())
+        self.checkpoint_count = int(input())
+        for i in range(self.checkpoint_count):
+            checkpoint_x, checkpoint_y = [int(j) for j in input().split()]
+            self.checkpoints.append({'x': checkpoint_x, 'y': checkpoint_y})
 
-    def isEqual(self, x, y):
-        return self.x == x and self.y == y
+    def get_checkpoint_by_id(self, i):
+        return self.checkpoints[i]
+
+    def get_laps_count(self):
+        return self.laps
+
+    def get_checkpoint_count(self):
+        return self.checkpoint_count
 
 
 class Player():
     _title = ''
-    x = 1000
-    y = 1000
-    speed = 0
-    vector = None
+    x = int(X_MAX / 2)
+    y = int(Y_MAX / 2)
+    vx = vy = angle = next_check_point_id = 0
+
+    boost_not_used = True
+    calculated_skidding_vector = None
+    calculated_path = Path()
+    calculated_lap = 0
 
     def __init__(self, title):
         self._title = title
 
-    def setParams(self, x, y):
-        self.set_direction(self.x, self.y, x, y)
-        self.speed, self.x, self.y = self.set_direction(self.x, self.y, x, y), x, y
-        print(self._title + ' speed: ' + str(self.speed), file=sys.stderr)
+    def scan_data(self):
+        # x: x position of your pod
+        # y: y position of your pod
+        # vx: x speed of your pod
+        # vy: y speed of your pod
+        # angle: angle of your pod
+        # next_check_point_id: next check point id of your pod
+        from_x, from_y = self.x, self.y
+        self.x, self.y, self.vx, self.vy, self.angle, self.next_check_point_id = [int(j) for j in input().split()]
+        self.calculated_skidding_vector = Vector(from_x, from_y, 0).substract(
+            Vector(self.x, self.y, 0))  # .multiply(self.next_checkpoint_dist)
 
-    def set_direction(self, x1, y1, x2, y2):
-        self.vector = {'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2}
-        # print(self.vector, file=sys.stderr)
+    def calculate_path(self, area):
+        angle_abs = abs(self.angle)
+        next_checkpoint = area.get_checkpoint_by_id(self.next_check_point_id)
+        laps_count = area.get_laps_count()
+        checkpoint_count = area.get_checkpoint_count()
 
-
-class Pod():
-    player = Player('player')
-    opponent = Player('oponent')
-    path = Path()
-
-    next_checkpoint_x = None
-    next_checkpoint_y = None
-    next_checkpoint_angle = 0
-    next_checkpoint_dist = 0
-    boost_not_used = True
-    all_path_points_known = False
-    _lap = 1
-    _path_points = []
-    _pased = -1
-    _current_taktik = "regular"
-
-    # regular - simple tactick, shield - if we gonna crush, drift - drift untill speed 0, attack - lets attack enemy, round - vector calculation path
-    def getData(self):
-        x, y, nx, ny, nd, na = [int(i) for i in input().split()]
-        ox, oy = [int(i) for i in input().split()]
-        self.player.setParams(x, y)
-        self.opponent.setParams(ox, oy)
-        if not (self.next_checkpoint_x == nx and self.next_checkpoint_y == ny):
-            if not (self.all_path_points_known):
-                self.addPathPoint(nx, ny)
-            self.next_checkpoint_x, self.next_checkpoint_y = nx, ny
-            self._pased = self._pased + 1
-        self.next_checkpoint_angle = abs(na)
-        self.next_checkpoint_dist = nd
-
-    def addPathPoint(self, x, y):
-        if (len(self._path_points) > 0 and self._path_points[0].isEqual(x, y)):
-            self.all_path_points_known = True
-        else:
-            self._path_points.append(PathPoint(x, y))
-
-    def _getTactick(self):
-        # todo check shield
-        if self.all_path_points_known:
-            # todo: check if drift posible
-            self._current_taktik = "regular"
-        else:
-            self._current_taktik = "regular"
-
-    def _regularPath(self):  # todo: vector calculation
-        if (self.next_checkpoint_angle > 90):
-            self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, 0)
-        # todo: or last
-        elif (self.next_checkpoint_dist > 6000 and self.next_checkpoint_angle < 5 and self.boost_not_used):
+        if (angle_abs > 90):
+            self.path.set_path(next_checkpoint.x, next_checkpoint.y, 0)
+        elif ((self.next_checkpoint_dist > 6000 or (
+                checkpoint_count == self.next_check_point_id and laps_count == self.calculated_lap)) and angle_abs < 5 and self.boost_not_used):
             self.boost_not_used = False
             self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, "BOOST")
         else:
@@ -230,37 +213,42 @@ class Pod():
             self.path.setPath(x, y, thrust)
             # Vectors Logik starts from here
 
-    def correctPath(self):
-        from_p = Vector(self.player.vector['x1'], self.player.vector['y1'], 0)
-        to_p = Vector(self.player.vector['x2'], self.player.vector['y2'], 0)
-        movement_vector = from_p.substract(to_p)  # .multiply(self.next_checkpoint_dist)
 
-        print(movement_vector, file=sys.stderr)
-        target_vector = Vector(self.next_checkpoint_x, self.next_checkpoint_y, 0)
-        if movement_vector.x > 10000:
-            corection_vector = target_vector
-        else:
-            corection_vector = target_vector.sum(movement_vector.multiply(-1))
-        # print(movement_vector, file=sys.stderr)
-        # print(self.next_checkpoint_x, self.next_checkpoint_y, file=sys.stderr)
-        return [int(corection_vector.x), int(corection_vector.y)]
+class Act():
+    players = []
+    opponents = []
+    area = None
 
-    def _driftPath(self):
-        pass
+    def __init__(self):
+        for i in range(CARS_COUNT):
+            self.opponents.append(Player('Opponent#' + str(i)))
+            self.players.append(Player('Player#' + str(i)))
 
-    def calculatePath(self):
-        self._getTactick()
-        getattr(self, "_" + self._current_taktik + "Path", "_regularPath")()
+    def create_area_map(self):
+        self.area = Area()
+
+    def get_players_data(self):
+        for i in range(CARS_COUNT):
+            self.players[i].scan_data()
+
+    def get_oponents_data(self):
+        for i in range(CARS_COUNT):
+            self.opponents[i].scan_data()
+
+    def calculate_path(self):
+        for i in range(CARS_COUNT):
+            self.players[i].calculate_path(self.area)
 
     def run(self):
-        if self.path is not None:
-            print(self.path.getString())
-        else:
-            raise Exception('OOOPS!')
+        for i in range(CARS_COUNT):
+            self.players[i].calculated_path.get_string()
 
 
-pod = Pod()
+action = Act()
+action.create_area_map()
 while True:
-    pod.getData()
-    pod.calculatePath()
-    pod.run()
+    action.get_players_data()
+    action.get_oponents_data()
+    action.calculate_path()
+    action.run()
+

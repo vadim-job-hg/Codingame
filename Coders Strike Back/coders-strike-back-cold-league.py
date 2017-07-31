@@ -1,4 +1,3 @@
-# https://www.codingame.com/ide/puzzle/coders-strike-back
 import sys
 import math
 
@@ -251,4 +250,3 @@ while True:
     action.get_oponents_data()
     action.calculate_path()
     action.run()
-

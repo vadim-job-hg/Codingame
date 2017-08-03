@@ -47,6 +47,7 @@ class Area:
     def get_corrs_from_direction(self, x, y, d):
         return {'x': x + self.DIRECTIONS[d]['x'], 'y': y + self.DIRECTIONS[d]['y']}
 
+
 class Player():
     x = y = 0
     _title = ''
@@ -57,8 +58,10 @@ class Player():
     def scan_pos(self):
         self.x, self.y = [int(j) for j in input().split()]
 
+
 class Enemy(Player):
     pass
+
 
 class Friend(Player):
     def get_legal_actions(self):
@@ -75,6 +78,7 @@ class Friend(Player):
         print("move_to {0} build_to {1}".format(move_to, build_to), file=sys.stderr)
         # move_to = self.get_best_coors_to_build(area, current_height)
         print("MOVE&BUILD 0 {0} {1}".format(move_to['d'], build_to['d']))
+
 
 class Action():
     area = None
@@ -121,7 +125,7 @@ class Action():
         action = self.unique_situation_check()
         if action is None:
             action = self.get_best_variant_to_move()
-        if (action == None):
+        if (action is None):
             print("MOVE&BUILD 0 N S")
             print("MOVE&BUILD 1 N S")
         else:
@@ -129,6 +133,8 @@ class Action():
 
     def unique_situation_check(self):
         # проверить удачные комбинации. Возможность столкнуть врага, захватить точку(пустую или врага, защитить свою точку)
+
+
         pass
 
     def get_best_variant_to_move(self):
@@ -153,7 +159,12 @@ class Action():
                     if build_height == '.':
                         continue
                     if (self.check_move_height(best_val, move_height, cur_h) and self.check_build_height(
-                            build_height)):
+                            build_height)
+                        and not (self.is_friend_on_pos(move_coors['x'], move_coors['y'], action['index']))
+                        and not (self.is_friend_on_pos(build_coors['x'], build_coors['y'], action['index']))
+                        and not (self.is_enemy_on_pos(move_coors['x'], move_coors['y']))
+                        and not (self.is_enemy_on_pos(build_coors['x'], build_coors['y']))
+                        ):
                         best_val = int(move_height)
                         best_action = action
 
@@ -167,14 +178,21 @@ class Action():
     def check_build_height(self, build_height):
         return int(build_height) < MAX_HEIGHT
 
-    def is_friend_on_pos(self):
-        pass
+    def is_friend_on_pos(self, x, y, ind):
+        for i in range(self.units_per_player):
+            if x == self.players[i].x and y == self.players[i].y and i != ind:
+                return True
+        return False
 
-    def is_enemy_on_pos(self):
-        pass
+    def is_enemy_on_pos(self, x, y):
+        for i in range(self.units_per_player):
+            if x == self.enemies[i].x and y == self.enemies[i].y:
+                return True
+        return False
 
     def builded4_point_is_your(self):
         pass
+
 
 action = Action()
 action.run()

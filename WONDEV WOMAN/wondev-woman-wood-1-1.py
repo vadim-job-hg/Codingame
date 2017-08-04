@@ -224,7 +224,7 @@ class Action():
                                             score_plus2 = 5
                                         elif (is_check_point2 and self.is_friends_check_point(act2_coors['x'],
                                                                                               act2_coors['y'])):
-                                            score_plus2 = 25
+                                            score_plus2 = 35
                                         else:
                                             score_plus2 = 0
                                         # todo: check if other can step here

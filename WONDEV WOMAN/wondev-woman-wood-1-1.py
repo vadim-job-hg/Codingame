@@ -75,7 +75,7 @@ class Action():
     enemies = []
     legal_actions = []
     legal_actions_list = {}
-    our_points =  set()
+    our_points = set()
     enemy_points = set()
 
     def __init__(self):
@@ -161,7 +161,7 @@ class Action():
                                 continue
                             else:
                                 act_height = int(act_height)
-                                #print("act_height {0}".format(act_height), file=sys.stderr)
+                                # print("act_height {0}".format(act_height), file=sys.stderr)
                                 for dir_2 in dir_data:
                                     act2_coors = self.area.get_corrs_from_direction(act_coors['x'], act_coors['y'],
                                                                                     dir_2)
@@ -178,7 +178,7 @@ class Action():
                                             best_action_data['score'] = score
                                             best_action['atype'], best_action['index'], best_action['dir_1'], \
                                             best_action['dir_2'] = action, index, dir_1, dir_2
-                                        if act2_height < act_height and act_height == 2 and 10 > best_action_data[
+                                        if act2_height + 1 < act_height and act_height == 2 and 10 > best_action_data[
                                             'score']:
                                             best_action_data['score'] = 10
                                             best_action['atype'], best_action['index'], best_action['dir_1'], \
@@ -186,7 +186,7 @@ class Action():
 
                     elif action == 'MOVE&BUILD':
                         for dir_1, dir_data in action_data.items():
-                            #print("dir_1 {0}".format(dir_1), file=sys.stderr)
+                            # print("dir_1 {0}".format(dir_1), file=sys.stderr)
                             act_coors = self.area.get_corrs_from_direction(current_player.x, current_player.y, dir_1)
                             act_height = self.area.get_value(act_coors['x'], act_coors['y'])
                             is_enemy_on_pos = self.is_enemy_on_pos(act_coors['x'], act_coors['y'])
@@ -218,11 +218,24 @@ class Action():
                                         continue
                                     else:
                                         act2_height = int(act2_height)
-                                        score = act2_height
+                                        is_check_point2 = self.is_check_point(act2_coors['x'], act2_coors['y'])
+                                        if not (is_check_point2) or self.is_enemy_check_point(act2_coors['x'],
+                                                                                              act2_coors['y']):
+                                            score_plus2 = 5
+                                        elif (is_check_point2 and self.is_friends_check_point(act2_coors['x'],
+                                                                                              act2_coors['y'])):
+                                            score_plus2 = 25
+                                        else:
+                                            score_plus2 = 0
+                                        # todo: check if other can step here
+                                        if act2_height == act_height + 1:
+                                            score_plus2 += 10
+
+                                        score = act2_height + score_plus2
                                         if act2_height < MAX_HEIGHT and score > best_score2:
                                             best_score2 = score
-                                            best_action['atype'], best_action['index'], best_action['dir_1'], \
-                                            best_action['dir_2'] = action, index, dir_1, dir_2
+                                        best_action['atype'], best_action['index'], best_action['dir_1'], \
+                                        best_action['dir_2'] = action, index, dir_1, dir_2
 
                 except IndexError:
                     continue
@@ -233,7 +246,7 @@ class Action():
         return self.area.get_value(x, y) == '3'
 
     def is_enemy_check_point(self, x, y):
-        pass
+        return self.xynum(x, y) in self.enemy_points
 
     def is_friends_check_point(self, x, y):
         return self.xynum(x, y) in self.our_points

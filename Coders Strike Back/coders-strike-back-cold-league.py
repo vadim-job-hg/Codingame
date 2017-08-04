@@ -140,7 +140,6 @@ class Path():
         self.x, self.y, self.trust = x, y, trust
 
     def get_string(self):
-        print('get_string', file=sys.stderr)
         print("{0} {1} {2}".format(self.x, self.y, self.trust))
 
 
@@ -155,6 +154,7 @@ class Area():
         for i in range(self.checkpoint_count):
             checkpoint_x, checkpoint_y = [int(j) for j in input().split()]
             self.checkpoints.append({'x': checkpoint_x, 'y': checkpoint_y})
+        print(self.checkpoints, file=sys.stderr)
 
     def get_checkpoint_by_id(self, i):
         return self.checkpoints[i]
@@ -164,7 +164,6 @@ class Area():
 
     def get_checkpoint_count(self):
         return self.checkpoint_count
-
 
 class Player():
     _title = ''
@@ -194,6 +193,7 @@ class Player():
     def calculate_path(self, area):
         angle_abs = abs(self.angle)
         next_checkpoint = area.get_checkpoint_by_id(self.next_check_point_id)
+        print(next_checkpoint, file=sys.stderr)
         laps_count = area.get_laps_count()
         checkpoint_count = area.get_checkpoint_count()
         next_checkpoint_dist = dist(self.x, self.y, next_checkpoint['x'], next_checkpoint['y'])
@@ -221,10 +221,10 @@ class Player():
             corection_vector = target_vector
         else:
             corection_vector = target_vector.sum(self.calculated_skidding_vector.multiply(-1))
+        corection_vector = target_vector
         # print(movement_vector, file=sys.stderr)
         # print(self.next_checkpoint_x, self.next_checkpoint_y, file=sys.stderr)
         return [int(corection_vector.x), int(corection_vector.y)]
-
 
 class Act():
     players = []
@@ -235,8 +235,6 @@ class Act():
         for i in range(CARS_COUNT):
             self.opponents.append(Player('Opponent#' + str(i)))
             self.players.append(Player('Player#' + str(i)))
-
-    def create_area_map(self):
         self.area = Area()
 
     def get_players_data(self):
@@ -253,12 +251,9 @@ class Act():
 
     def run(self):
         for i in range(CARS_COUNT):
-            print('test run', file=sys.stderr)
             self.players[i].calculated_path.get_string()
 
-
 action = Act()
-action.create_area_map()
 while True:
     action.get_players_data()
     action.get_oponents_data()

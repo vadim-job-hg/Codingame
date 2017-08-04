@@ -6,6 +6,10 @@ Y_MAX = 9000
 CARS_COUNT = 2
 
 
+def dist(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+
 class Point(object):
     """ Point class: Reprepsents a point in the x, y, z space. """
 
@@ -136,7 +140,8 @@ class Path():
         self.x, self.y, self.trust = x, y, trust
 
     def get_string(self):
-        return "{0} {1} {2}".format(self.x, self.y, self.trust)
+        print('get_string', file=sys.stderr)
+        print("{0} {1} {2}".format(self.x, self.y, self.trust))
 
 
 class Area():
@@ -166,7 +171,6 @@ class Player():
     x = int(X_MAX / 2)
     y = int(Y_MAX / 2)
     vx = vy = angle = next_check_point_id = 0
-
     boost_not_used = True
     calculated_skidding_vector = None
     calculated_path = Path()
@@ -192,25 +196,34 @@ class Player():
         next_checkpoint = area.get_checkpoint_by_id(self.next_check_point_id)
         laps_count = area.get_laps_count()
         checkpoint_count = area.get_checkpoint_count()
-
+        next_checkpoint_dist = dist(self.x, self.y, next_checkpoint['x'], next_checkpoint['y'])
         if (angle_abs > 90):
-            self.path.set_path(next_checkpoint.x, next_checkpoint.y, 0)
-        elif ((self.next_checkpoint_dist > 6000 or (
+            self.calculated_path.set_path(next_checkpoint['x'], next_checkpoint['y'], 0)
+        elif ((next_checkpoint_dist > 6000 or (
                 checkpoint_count == self.next_check_point_id and laps_count == self.calculated_lap)) and angle_abs < 5 and self.boost_not_used):
             self.boost_not_used = False
-            self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, "BOOST")
+            self.calculated_path.set_path(next_checkpoint['x'], next_checkpoint['y'], "BOOST")
         else:
             thrust = 100
-            if self.next_checkpoint_dist < 2500:
+            if next_checkpoint_dist < 2500:
                 thrust = 50
 
-            if self.next_checkpoint_dist < 1000:
+            if next_checkpoint_dist < 1000:
                 thrust = 100
 
-            x, y = self.correctPath()
-
-            self.path.setPath(x, y, thrust)
+            x, y = self.correct_path(next_checkpoint)
+            self.calculated_path.set_path(x, y, thrust)
             # Vectors Logik starts from here
+
+    def correct_path(self, next_checkpoint):
+        target_vector = Vector(next_checkpoint['x'], next_checkpoint['y'], 0)
+        if self.calculated_skidding_vector.x > 10000:
+            corection_vector = target_vector
+        else:
+            corection_vector = target_vector.sum(self.calculated_skidding_vector.multiply(-1))
+        # print(movement_vector, file=sys.stderr)
+        # print(self.next_checkpoint_x, self.next_checkpoint_y, file=sys.stderr)
+        return [int(corection_vector.x), int(corection_vector.y)]
 
 
 class Act():
@@ -240,6 +253,7 @@ class Act():
 
     def run(self):
         for i in range(CARS_COUNT):
+            print('test run', file=sys.stderr)
             self.players[i].calculated_path.get_string()
 
 

@@ -2,6 +2,7 @@ import sys
 import math
 
 MAX_HEIGHT = 4
+MAX_SIZE = 7
 
 
 class Area:
@@ -32,7 +33,7 @@ class Area:
     def obj(x, y, d):
         return {'x': x, 'y': y, 'd': d}
 
-    def array_area(x, y):
+    def array_area(self, x, y):
         return [
             self.obj(x - 1, y, 'W'),
             self.obj(x - 1, y - 1, 'NW'),
@@ -74,8 +75,8 @@ class Action():
     enemies = []
     legal_actions = []
     legal_actions_list = {}
-    our_points = []
-    enemy_points = []
+    our_points =  set()
+    enemy_points = set()
 
     def __init__(self):
         self.area = Area()
@@ -98,121 +99,157 @@ class Action():
         self.legal_actions_list.clear()
         for i in range(self.legal_actions):
             atype, index, dir_1, dir_2 = input().split()
-            self.legal_actions_list.setdefault(int(index), {}).setdefault(dir_1, []).append(
-                {'dir_2': dir_2, 'atype': atype})
-        print("Legal Actions {0}".format(self.legal_actions_list), file=sys.stderr)
+            self.legal_actions_list.setdefault(int(index), {}).setdefault(atype, {}).setdefault(dir_1, []).append(dir_2)
+            # print("Legal Actions {0}".format(self.legal_actions_list), file=sys.stderr)
 
-        def run(self):
-            while True:
-                self.area.build_map()
-                for i in range(self.units_per_player):
-                    self.players[i].scan_pos()
-                for i in range(self.units_per_player):
-                    self.enemies[i].scan_pos()
-                self._get_legal_actions_list()
-                self.player_actions()
+    def run(self):
+        while True:
+            self.area.build_map()
+            for i in range(self.units_per_player):
+                self.players[i].scan_pos()
+            for i in range(self.units_per_player):
+                self.enemies[i].scan_pos()
+            self._get_catched_points()
+            self._get_legal_actions_list()
+            self.player_actions()
 
-        def player_actions(self):
-            action = self.unique_situation_check()
-            if action is None:
-                action = self.get_best_variant_to_move()
-            if action is not None:
-                print("{0} {1} {2} {3}".format(action['atype'], action['index'], action['dir_1'], action['dir_2']))
+    def player_actions(self):
+        action = self.unique_situation_check()
+        if action is None:
+            action = self.get_best_variant_to_act()
+        if action is not None:
+            print("{0} {1} {2} {3}".format(action['atype'], action['index'], action['dir_1'], action['dir_2']))
 
-        def unique_situation_check(self):
-            # проверить удачные комбинации. Возможность столкнуть врага, захватить точку(пустую или врага, защитить свою точку)
+    def _get_catched_points(self):
+        for i in range(self.units_per_player):
+            height = int(self.area.get_value(self.players[i].x, self.players[i].y))
+            if height == 3:
+                self.our_points.add(self.xynum(self.players[i].x, self.players[i].y))
+                self.enemy_points.discard(self.xynum(self.players[i].x, self.players[i].y))
+        for i in range(self.units_per_player):
+            height = int(self.area.get_value(self.enemies[i].x, self.enemies[i].y))
+            if height == 3:
+                self.enemy_points.add(self.xynum(self.players[i].x, self.players[i].y))
+                self.our_points.discard(self.xynum(self.players[i].x, self.players[i].y))
 
+    def xynum(self, x, y):
+        return x + y * 10  # (MAX_SIZE+1)
 
-            pass
+    def unique_situation_check(self):
+        # проверить удачные комбинации. Возможность столкнуть врага, захватить точку(пустую или врага, защитить свою точку)
 
-        def get_best_variant_to_move(self):
-            for index, player_actions in self.legal_actions_list.items():
+        pass
 
-                for act_direction, action_data in player_actions.items():
-
-                    for data in action_data:
-                        pass
-
-            return None
-            best_action = None
-            best_val = best_val2 = -1
-            # print(self.legal_actions_list, file=sys.stderr)
-            for action in self.legal_actions_list:
-                cur_p = self.players[action['index']]
-                cur_h = int(self.area.get_value(cur_p.x, cur_p.y))
+    def get_best_variant_to_act(self):
+        best_action = {}
+        best_action_data = {
+            'score': -1
+        }
+        for index, player_actions in self.legal_actions_list.items():
+            print("index {0}".format(index), file=sys.stderr)
+            current_player = self.players[index]
+            current_height = int(self.area.get_value(current_player.x, current_player.y))
+            for action, action_data in player_actions.items():
                 try:
-                    if (action['atype'] == 'PUSH&BUILD'):
-                        print(action, file=sys.stderr)
-                        push_coors = self.area.get_corrs_from_direction(cur_p.x, cur_p.y, action['dir_1'])
-                        push_height = self.area.get_value(move_coors['x'], move_coors['y'])
-                        if push_height == '.':
-                            continue
-                        push_dir = self.area.get_corrs_from_direction(push_coors['x'], push_coors['y'],
-                                                                      action['dir_2'])
-                        push_dir_height = self.area.get_value(push_coors['x'], push_coors['y'])
+                    print("Action {0}".format(action), file=sys.stderr)
+                    if action == 'PUSH&BUILD':
+                        for dir_1, dir_data in action_data.items():
+                            act_coors = self.area.get_corrs_from_direction(current_player.x, current_player.y, dir_1)
+                            act_height = self.area.get_value(act_coors['x'], act_coors['y'])
+                            is_enemy_on_pos = self.is_enemy_on_pos(act_coors['x'], act_coors['y'])
+                            if act_height == '.' or not (is_enemy_on_pos):
+                                continue
+                            else:
+                                act_height = int(act_height)
+                                #print("act_height {0}".format(act_height), file=sys.stderr)
+                                for dir_2 in dir_data:
+                                    act2_coors = self.area.get_corrs_from_direction(act_coors['x'], act_coors['y'],
+                                                                                    dir_2)
+                                    act2_height = self.area.get_value(act2_coors['x'], act2_coors['y'])
+                                    is_enemy_on_pos2 = self.is_enemy_on_pos(act2_coors['x'], act2_coors['y'])
+                                    is_friend_on_pos2 = self.is_enemy_on_pos(act2_coors['x'], act2_coors['y'])
+                                    if act2_height == '.' or is_enemy_on_pos2 or is_friend_on_pos2:
+                                        continue
+                                    else:
+                                        act2_height = int(act2_height)
+                                        score = (act2_height - act_height) + 1
+                                        if act2_height < act_height < MAX_HEIGHT - 1 and score > best_action_data[
+                                            'score']:
+                                            best_action_data['score'] = score
+                                            best_action['atype'], best_action['index'], best_action['dir_1'], \
+                                            best_action['dir_2'] = action, index, dir_1, dir_2
+                                        if act2_height < act_height and act_height == 2 and 10 > best_action_data[
+                                            'score']:
+                                            best_action_data['score'] = 10
+                                            best_action['atype'], best_action['index'], best_action['dir_1'], \
+                                            best_action['dir_2'] = action, index, dir_1, dir_2
 
-                        if push_dir_height == '.':
-                            continue
-
-                        if ((1 <= cur_h <= 3) and 2 < int(push_height) < MAX_HEIGHT and int(push_dir_height) < 2
-                            and self.check_build_height(push_dir_height)
-                            and not (self.is_friend_on_pos(push_dir['x'], push_dir['y'], action['index']))
-                            and self.is_enemy_on_pos(push_coors['x'], push_coors['y'])
-                            and not (self.is_enemy_on_pos(push_dir['x'], push_dir['y']))
-                            ):
-                            best_val = int(push_height)
-                            best_val2 = int(push_dir_height)
-                            best_action = action
-                            break
-                    else:
-                        move_coors = self.area.get_corrs_from_direction(cur_p.x, cur_p.y, action['dir_1'])
-                        move_height = self.area.get_value(move_coors['x'], move_coors['y'])
-                        if move_height == '.':
-                            continue
-                        build_coors = self.area.get_corrs_from_direction(move_coors['x'], move_coors['y'],
-                                                                         action['dir_2'])
-                        build_height = self.area.get_value(build_coors['x'], build_coors['y'])
-                        if build_height == '.':
-                            continue
-                        if (self.check_move_height(best_val, best_val2, move_height, build_height,
-                                                   cur_h) and self.check_build_height(
-                                build_height)  # and int(build_height)>=best_val2
-                            and not (self.is_friend_on_pos(move_coors['x'], move_coors['y'], action['index']))
-                            and not (self.is_friend_on_pos(build_coors['x'], build_coors['y'], action['index']))
-                            and not (self.is_enemy_on_pos(move_coors['x'], move_coors['y']))
-                            and not (self.is_enemy_on_pos(build_coors['x'], build_coors['y']))
-                            ):
-                            best_val = int(move_height)
-                            best_val2 = int(build_height)
-                            best_action = action
+                    elif action == 'MOVE&BUILD':
+                        for dir_1, dir_data in action_data.items():
+                            #print("dir_1 {0}".format(dir_1), file=sys.stderr)
+                            act_coors = self.area.get_corrs_from_direction(current_player.x, current_player.y, dir_1)
+                            act_height = self.area.get_value(act_coors['x'], act_coors['y'])
+                            is_enemy_on_pos = self.is_enemy_on_pos(act_coors['x'], act_coors['y'])
+                            is_friend_on_pos = self.is_friend_on_pos(act_coors['x'], act_coors['y'])
+                            if act_height == '.' or is_enemy_on_pos or is_friend_on_pos:
+                                continue
+                            else:
+                                act_height = int(act_height)
+                                is_check_point = self.is_check_point(act_coors['x'], act_coors['y'])
+                                if is_check_point and not (self.is_friends_check_point(act_coors['x'], act_coors['y'])):
+                                    score_plus = 15
+                                else:
+                                    score_plus = 0
+                                score = score_plus + act_height
+                                if MAX_HEIGHT > act_height and best_action_data[
+                                    'score'] < score and act_height <= current_height + 1:
+                                    best_action_data['score'] = score
+                                else:
+                                    continue
+                                best_score2 = -1
+                                for dir_2 in dir_data:
+                                    print("dir_2 {0}".format(dir_1), file=sys.stderr)
+                                    act2_coors = self.area.get_corrs_from_direction(act_coors['x'], act_coors['y'],
+                                                                                    dir_2)
+                                    act2_height = self.area.get_value(act2_coors['x'], act2_coors['y'])
+                                    is_enemy_on_pos2 = self.is_enemy_on_pos(act2_coors['x'], act2_coors['y'])
+                                    is_friend_on_pos2 = self.is_friend_on_pos(act2_coors['x'], act2_coors['y'], index)
+                                    if act2_height == '.' or is_enemy_on_pos2 or is_friend_on_pos2:
+                                        continue
+                                    else:
+                                        act2_height = int(act2_height)
+                                        score = act2_height
+                                        if act2_height < MAX_HEIGHT and score > best_score2:
+                                            best_score2 = score
+                                            best_action['atype'], best_action['index'], best_action['dir_1'], \
+                                            best_action['dir_2'] = action, index, dir_1, dir_2
 
                 except IndexError:
                     continue
-            return best_action
+        print("Legal Actions {0}".format(best_action), file=sys.stderr)
+        return best_action
 
-        def check_move_height(self, best_val, best_val2, move_height, build_height, cur_h):
-            return (best_val < int(move_height) or (
-            (int(build_height) <= int(move_height) + 1 or int(build_height) + 1 == int(cur_h)) and best_val == int(
-                move_height)) and best_val2 < int(build_height)) and int(move_height) <= cur_h + 1 and int(
-                move_height) < MAX_HEIGHT
+    def is_check_point(self, x, y):
+        return self.area.get_value(x, y) == '3'
 
-        def check_build_height(self, build_height):
-            return int(build_height) < MAX_HEIGHT
+    def is_enemy_check_point(self, x, y):
+        pass
 
-        def is_friend_on_pos(self, x, y, ind):
-            for i in range(self.units_per_player):
-                if x == self.players[i].x and y == self.players[i].y and i != ind:
-                    return True
-            return False
+    def is_friends_check_point(self, x, y):
+        return self.xynum(x, y) in self.our_points
 
-        def is_enemy_on_pos(self, x, y):
-            for i in range(self.units_per_player):
-                if x == self.enemies[i].x and y == self.enemies[i].y:
-                    return True
-            return False
+    def is_friend_on_pos(self, x, y, ind=-1):
+        for i in range(self.units_per_player):
+            if x == self.players[i].x and y == self.players[i].y and i != ind:
+                return True
+        return False
 
-        def builded4_point_is_your(self):
-            pass
+    def is_enemy_on_pos(self, x, y):
+        for i in range(self.units_per_player):
+            if x == self.enemies[i].x and y == self.enemies[i].y:
+                return True
+        return False
 
-    action = Action()
-    action.run()
+
+action = Action()
+action.run()

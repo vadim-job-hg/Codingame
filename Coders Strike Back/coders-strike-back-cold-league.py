@@ -1,10 +1,13 @@
-# https://www.codingame.com/ide/puzzle/coders-strike-back
 import sys
 import math
 
 X_MAX = 16000
 Y_MAX = 9000
 CARS_COUNT = 2
+
+
+def dist(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 
 class Point(object):
@@ -137,7 +140,7 @@ class Path():
         self.x, self.y, self.trust = x, y, trust
 
     def get_string(self):
-        return "{0} {1} {2}".format(self.x, self.y, self.trust)
+        print("{0} {1} {2}".format(self.x, self.y, self.trust))
 
 
 class Area():
@@ -151,6 +154,7 @@ class Area():
         for i in range(self.checkpoint_count):
             checkpoint_x, checkpoint_y = [int(j) for j in input().split()]
             self.checkpoints.append({'x': checkpoint_x, 'y': checkpoint_y})
+        print(self.checkpoints, file=sys.stderr)
 
     def get_checkpoint_by_id(self, i):
         return self.checkpoints[i]
@@ -161,13 +165,11 @@ class Area():
     def get_checkpoint_count(self):
         return self.checkpoint_count
 
-
 class Player():
     _title = ''
     x = int(X_MAX / 2)
     y = int(Y_MAX / 2)
     vx = vy = angle = next_check_point_id = 0
-
     boost_not_used = True
     calculated_skidding_vector = None
     calculated_path = Path()
@@ -191,28 +193,38 @@ class Player():
     def calculate_path(self, area):
         angle_abs = abs(self.angle)
         next_checkpoint = area.get_checkpoint_by_id(self.next_check_point_id)
+        print(next_checkpoint, file=sys.stderr)
         laps_count = area.get_laps_count()
         checkpoint_count = area.get_checkpoint_count()
-
+        next_checkpoint_dist = dist(self.x, self.y, next_checkpoint['x'], next_checkpoint['y'])
         if (angle_abs > 90):
-            self.path.set_path(next_checkpoint.x, next_checkpoint.y, 0)
-        elif ((self.next_checkpoint_dist > 6000 or (
+            self.calculated_path.set_path(next_checkpoint['x'], next_checkpoint['y'], 0)
+        elif ((next_checkpoint_dist > 6000 or (
                 checkpoint_count == self.next_check_point_id and laps_count == self.calculated_lap)) and angle_abs < 5 and self.boost_not_used):
             self.boost_not_used = False
-            self.path.setPath(self.next_checkpoint_x, self.next_checkpoint_y, "BOOST")
+            self.calculated_path.set_path(next_checkpoint['x'], next_checkpoint['y'], "BOOST")
         else:
             thrust = 100
-            if self.next_checkpoint_dist < 2500:
+            if next_checkpoint_dist < 2500:
                 thrust = 50
 
-            if self.next_checkpoint_dist < 1000:
+            if next_checkpoint_dist < 1000:
                 thrust = 100
 
-            x, y = self.correctPath()
-
-            self.path.setPath(x, y, thrust)
+            x, y = self.correct_path(next_checkpoint)
+            self.calculated_path.set_path(x, y, thrust)
             # Vectors Logik starts from here
 
+    def correct_path(self, next_checkpoint):
+        target_vector = Vector(next_checkpoint['x'], next_checkpoint['y'], 0)
+        if self.calculated_skidding_vector.x > 10000:
+            corection_vector = target_vector
+        else:
+            corection_vector = target_vector.sum(self.calculated_skidding_vector.multiply(-1))
+        corection_vector = target_vector
+        # print(movement_vector, file=sys.stderr)
+        # print(self.next_checkpoint_x, self.next_checkpoint_y, file=sys.stderr)
+        return [int(corection_vector.x), int(corection_vector.y)]
 
 class Act():
     players = []
@@ -223,8 +235,6 @@ class Act():
         for i in range(CARS_COUNT):
             self.opponents.append(Player('Opponent#' + str(i)))
             self.players.append(Player('Player#' + str(i)))
-
-    def create_area_map(self):
         self.area = Area()
 
     def get_players_data(self):
@@ -243,12 +253,9 @@ class Act():
         for i in range(CARS_COUNT):
             self.players[i].calculated_path.get_string()
 
-
 action = Act()
-action.create_area_map()
 while True:
     action.get_players_data()
     action.get_oponents_data()
     action.calculate_path()
     action.run()
-

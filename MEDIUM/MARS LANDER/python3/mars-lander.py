@@ -25,7 +25,6 @@ class Shutle():
         self.x, self.y, self.h_speed, self.v_speed, self.fuel, self.rotate, self.power = [int(i) for i in
                                                                                           input().split()]
         self.v_a, self.h_a = (self.v_speed - v_speed_last), (self.h_speed - h_speed_last)
-        print(self.v_a, self.h_a, file=sys.stderr)
 
     def printParams(self):
         print("{0} {1}".format(self.angle, self.power))
@@ -50,9 +49,6 @@ class LandingZone():
             if self._hightest_dot < land_y:
                 self._hightest_dot = land_y
             land_x_prev, land_y_prev = land_x, land_y
-        print("Start: " + str(self._landing_start), file=sys.stderr)
-        print("End: " + str(self._landing_end), file=sys.stderr)
-        print("Height: " + str(self._landing_height), file=sys.stderr)
 
     def getShutleSituation(self):
         self._shutle.getParams()
@@ -109,4 +105,3 @@ landing_zone = LandingZone()
 while True:
     landing_zone.getShutleSituation()
     landing_zone.run()
-    pass

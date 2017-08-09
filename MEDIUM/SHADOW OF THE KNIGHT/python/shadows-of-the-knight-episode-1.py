@@ -3,20 +3,19 @@ import sys
 import math
 
 # Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
+# the standard raw_input according to the problem statement.
 
 # w: width of the building.
 # h: height of the building.
-w, h = [int(i) for i in input().split()]
-n = int(input())  # maximum number of turns before game over.
-x0, y0 = [int(i) for i in input().split()]
+w, h = [int(i) for i in raw_input().split()]
+n = int(raw_input())  # maximum number of turns before game over.
+x0, y0 = [int(i) for i in raw_input().split()]
 minx = miny  = 0
 maxx = w - 1 
 maxy = h - 1
 
 while True:
-    bomb_dir = input()  # the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
-    print(bomb_dir, file=sys.stderr)
+    bomb_dir = raw_input()  # the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)
     if bomb_dir.find("U")>-1:
@@ -27,8 +26,7 @@ while True:
         maxx = x0 - 1
     elif bomb_dir.find("R")>-1:
         minx =x0 + 1
-    print(minx, miny, maxx, maxy, file=sys.stderr)    
     x0 = minx + math.ceil((maxx  - minx)/2)
     y0 = miny + math.ceil((maxy  - miny)/2)
     # the location of the next window Batman should jump to.
-    print("{0} {1}".format(x0, y0))
+    print("{0} {1}".format(int(x0), int(y0)))

@@ -23,11 +23,12 @@ class Shutle():
     def getParams(self):
         v_speed_last, h_speed_last = self.v_speed, self.h_speed
         self.x, self.y, self.h_speed, self.v_speed, self.fuel, self.rotate, self.power = [int(i) for i in
-                                                                                          input().split()]
+                                                                                          raw_input().split()]
         self.v_a, self.h_a = (self.v_speed - v_speed_last), (self.h_speed - h_speed_last)
 
     def printParams(self):
         print("{0} {1}".format(self.angle, self.power))
+
 
 class LandingZone():
     _landing_start = 0
@@ -38,10 +39,10 @@ class LandingZone():
     _hightest_dot = 0
 
     def __init__(self):
-        surface_n = int(input())
+        surface_n = int(raw_input())
         land_x_prev = land_y_prev = 0
         for i in range(surface_n):
-            land_x, land_y = [int(j) for j in input().split()]
+            land_x, land_y = [int(j) for j in raw_input().split()]
             if (land_x_prev != 0 and land_y_prev == land_y):
                 self._landing_height = land_y
                 self._landing_start = land_x_prev
@@ -100,6 +101,7 @@ class LandingZone():
         self.getToSafeZone()
         self.landing()
         self._shutle.printParams()
+
 
 landing_zone = LandingZone()
 while True:

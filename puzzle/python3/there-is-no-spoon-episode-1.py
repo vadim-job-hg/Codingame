@@ -9,9 +9,7 @@ height = int(input())  # the number of cells on the Y axis
 lines = []
 for i in range(height):
     line = input()  # width characters, each either 0 or .
-    print(line, file=sys.stderr)
     lines.append(list(line))
-print(lines, file=sys.stderr)
 # Write an action using print
 # To debug: print("Debug messages...", file=sys.stderr)
 for y in range(height):

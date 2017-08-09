@@ -16,7 +16,7 @@ current_x, current_y = initial_tx, initial_ty
 # game loop
 while True:
     remaining_turns = int(input())  # The remaining amount of turns Thor can move. Do not remove this line.
-    move_string = "";
+    move_string = ""
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)
     # print(str(current_x), file=sys.stderr)

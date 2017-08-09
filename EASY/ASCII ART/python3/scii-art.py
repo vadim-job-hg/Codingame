@@ -17,7 +17,6 @@ for i in range(h):
     for let in t:
         try:
             index = string.index(let.upper())
-            print(i, file=sys.stderr)
             word = word + row[i][(index * l):((index + 1) * l)]
         except ValueError:
             index = string.index("?")

@@ -11,9 +11,9 @@ for i in range(n):
     # ext: file extension
     # mt: MIME type.
     ext, mt = raw_input().split()
-    dictionary[ext.lower()] = mt    
+    dictionary[ext.lower()] = mt
 for i in range(q):
-    fname = raw_input()  # One file name per line.    
+    fname = raw_input()  # One file name per line.
     farr = fname.split('.')
     if len(farr)>1:
         try:

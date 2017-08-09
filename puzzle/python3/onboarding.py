@@ -1,7 +1,5 @@
-# https://www.codingame.com/ide/puzzle/onboarding
-
 # game loop
-while 1:
+while True:
     enemy_1 = input()  # name of enemy 1
     dist_1 = int(input())  # distance to enemy 1
     enemy_2 = input()  # name of enemy 2

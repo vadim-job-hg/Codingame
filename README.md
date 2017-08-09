@@ -1,2 +1,2 @@
-Python 3 Solutions
+Solutions
 https://www.codingame.com

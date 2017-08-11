@@ -34,7 +34,6 @@ class Area:
         self.map = []
         for i in range(self.size):
             self.map.append(list(input()))
-        print(self.map, file=sys.stderr)
 
     def get_value(self, x, y):
         return self.map[y][x]
@@ -53,10 +52,8 @@ class Player():
 
     def run(self, area, enemy):
         current_height = int(area.get_value(self.x, self.y))
-        print("current_height {0}".format(current_height), file=sys.stderr)
         move_to, new_height = self.get_best_coors_to_move(area, current_height, self.x, self.y, enemy)
         build_to, new_height2 = self.get_best_coors_to_build(area, new_height, move_to['x'], move_to['y'], enemy)
-        print("move_to {0} build_to {1}".format(move_to, build_to), file=sys.stderr)
         # move_to = self.get_best_coors_to_build(area, current_height)
         print("MOVE&BUILD 0 {0} {1}".format(move_to['d'], build_to['d']))
 
@@ -67,7 +64,6 @@ class Player():
             try:
                 if coors['x'] >= 0 and coors['y'] >= 0 and not (enemy.y == coors['y'] and enemy.x == coors['x']):
                     value = area.get_value(coors['x'], coors['y'])
-                    print("x {0} y {1} value {2}".format(coors['x'], coors['y'], value), file=sys.stderr)
                     if value == '.':
                         continue
                     # todo: enemy not here
@@ -75,9 +71,7 @@ class Player():
                         best_val, best_coors = int(value), coors.copy()
                         # print("value {0}".format(value), file=sys.stderr)
             except Exception as e:
-                print("Exception {0}".format(e), file=sys.stderr)
                 continue
-        print("best_coors {0}, best_val {1}".format(best_coors, best_val), file=sys.stderr)
         return best_coors, best_val
 
     def get_best_coors_to_build(self, area, current_height, x, y, enemy):
@@ -87,7 +81,6 @@ class Player():
             try:
                 if coors['x'] >= 0 and coors['y'] >= 0 and not (enemy.y == coors['y'] and enemy.x == coors['x']):
                     value = area.get_value(coors['x'], coors['y'])
-                    print("x {0} y {1} value {2}".format(coors['x'], coors['y'], value), file=sys.stderr)
                     if value == '.':
                         continue
                     # todo: enemy not here
@@ -95,9 +88,7 @@ class Player():
                         best_val, best_coors = int(value), coors.copy()
                         # print("value {0}".format(value), file=sys.stderr)
             except Exception as e:
-                print("Exception {0}".format(e), file=sys.stderr)
                 continue
-        print("best_coors {0}, best_val {1}".format(best_coors, best_val), file=sys.stderr)
         return best_coors, best_val
 
 area = Area()

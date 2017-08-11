@@ -32,18 +32,14 @@ map = []
 for i in range(h):
     # represents a line in the grid and contains W integers. Each integer represents one room of a given type.
     map.append(input().split())
-print(map, file=sys.stderr)
 ex = int(input())  # the coordinate along the X axis of the exit (not useful for this first mission, but must be read).
 
 # game loop
 while True:
     xi, yi, pos = input().split()
-    print(xi, yi, pos, file=sys.stderr)
     xi = int(xi)
     yi = int(yi)
-    print(map[yi][xi], file=sys.stderr)
     rule = DIR_RULES[MAP_RULES[map[yi][xi]][pos]]
-    print(rule, file=sys.stderr)
     x_to, y_to = xi+rule['x'], yi+rule['y']
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)

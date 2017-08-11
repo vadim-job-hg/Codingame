@@ -23,11 +23,7 @@ class Game():
         self.current_status()
 
     def current_status(self):
-        print("ROUND: " + str(self._round), file=sys.stderr)
-        print("P#1 KARTS " + str(self._player1deck), file=sys.stderr)
-        print("P#2 KARTS " + str(self._player2deck), file=sys.stderr)
-        print("P#1T KARTS " + str(self._player1table), file=sys.stderr)
-        print("P#2T KARTS " + str(self._player2table), file=sys.stderr)
+        pass
 
     def print_result(self):
         if self._winner == "PAT":

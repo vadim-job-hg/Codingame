@@ -57,7 +57,6 @@ class Area:
                         return "RIGHT"
                 else:
                     floor_coor = self.area.getClosest(self.clone.clone_floor, self.clone.clone_pos)
-                    print(str(self.clone.clone_floor + 1) + "__" + str(self.area.exit_floor), file=sys.stderr)
                     if floor_coor == None:
                         return "BUILD"
                     elif (abs(floor_coor - self.clone.clone_pos) > 5) and self.clone.clone_floor < self.area.exit_floor:

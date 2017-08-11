@@ -41,7 +41,6 @@ class Action:
 
     def klaatu_barada_nikhe_khe_khe(self):
         # get best zombie
-        print(self.zombies, file=sys.stderr)
         zomb = self.get_closest()
         if zomb:
             print(zomb['x'], zomb['y'])

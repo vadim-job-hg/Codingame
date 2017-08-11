@@ -27,7 +27,6 @@ def fillMatrixAndFindCoors(x0, y0):
 
 while True:
     bomb_dir = input()  # the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
-    print(bomb_dir, file=sys.stderr)
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)
     if bomb_dir.find("WARMER") > -1:
@@ -38,7 +37,6 @@ while True:
         maxx = x0 - 1
     elif bomb_dir.find("R") > -1:
         minx = x0 + 1
-    print(minx, miny, maxx, maxy, file=sys.stderr)
     x0 = minx + math.ceil((maxx - minx) / 2)
     y0 = miny + math.ceil((maxy - miny) / 2)
     # the location of the next window Batman should jump to.

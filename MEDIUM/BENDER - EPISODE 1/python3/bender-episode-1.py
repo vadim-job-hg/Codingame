@@ -1,4 +1,3 @@
-# https://www.codingame.com/ide/puzzle/bender-episode-1
 import sys
 import math
 
@@ -34,13 +33,11 @@ class Action:
             except ValueError:
                 pass
             self._map.append(row)
-            print(row, file=sys.stderr)
             if len(teleports) > 1:
                 self._teleports[str(teleports[0][0]) + str(teleports[0][1])] = {'x': teleports[1][0],
                                                                                 'y': teleports[1][1]}
                 self._teleports[str(teleports[1][0]) + str(teleports[1][1])] = {'x': teleports[0][0],
                                                                                 'y': teleports[0][1]}
-            print(self._bender_x, self._bender_y, file=sys.stderr)
 
     def is_next_wall(self):
         return self._map[self._bender_y + self.DIR_RULES[self._bender_d]['y']][
@@ -67,12 +64,10 @@ class Action:
             self._bender_x, self._bender_y = coor['x'], coor['y']
 
         if self.is_next_wall() or self.is_next_x():
-            print("WALL ON {0}".format(self._bender_d), file=sys.stderr)
             for direction in self.wall_directions:
                 self._bender_d = direction
                 if not (self.is_next_wall() or self.is_next_x()):
                     break
-                print("WALL ON {0}".format(self._bender_d), file=sys.stderr)
 
                 return True
 

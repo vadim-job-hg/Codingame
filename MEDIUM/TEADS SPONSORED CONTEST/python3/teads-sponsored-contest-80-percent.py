@@ -1,4 +1,3 @@
-#todo:
 import sys
 import math
 
@@ -18,7 +17,7 @@ n = int(input())  # the number of adjacency relations
 keys = {}
 for i in range(n):
     # xi: the ID of a person which is adjacent to yi
-    # yi: the ID of a person which is adjacent to xi
+    # yi: the ID of a p erson which is adjacent to xi
     xi, yi = [int(j) for j in input().split()]
     k = keys.get(xi, 0)
     keys[xi] = k+1
@@ -26,8 +25,14 @@ for i in range(n):
     keys[yi] = k+1
     connections.setdefault(xi, []).append(yi)
     connections.setdefault(yi, []).append(xi)
+print(keys, file=sys.stderr)
 temp = []
 for i, v in keys.items():
     if v>1:
         temp.append(calculate(i, -1))
+# Write an action using print
+# To debug: print("Debug messages...", file=sys.stderr)
+
+
+# The minimal amount of steps required to completely propagate the advertisement
 print(min(temp))

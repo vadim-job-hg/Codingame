@@ -11,8 +11,6 @@ cost_left = int(input())
 for i in range(n):
     budget_left.append(int(input()))
     budget_calculated.append(0)
-print("budget_left {0}".format(budget_left), file=sys.stderr)
-print("cost_left {0}".format(cost_left), file=sys.stderr)
 while oods_left>0:
     each_pay = math.floor(cost_left/oods_left)
     for i in range(n):
@@ -27,7 +25,6 @@ while oods_left>0:
             budget_calculated[i] += each_pay
             cost_left -= each_pay
             budget_left[i] -= each_pay
-        print("budget_calculated {0}".format(budget_calculated), file=sys.stderr)
         if cost_left==0:
             break
     if cost_left<oods_left:
@@ -42,7 +39,6 @@ while oods_left>0:
 if oods_left==0 and cost_left>0:
     print("IMPOSSIBLE")
 else:
-    print("budget_calculated {0}".format(budget_calculated), file=sys.stderr)
     budget_calculated.sort()
     for b in budget_calculated:
         print(b)

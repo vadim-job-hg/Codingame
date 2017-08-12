@@ -154,7 +154,6 @@ class Area():
         for i in range(self.checkpoint_count):
             checkpoint_x, checkpoint_y = [int(j) for j in input().split()]
             self.checkpoints.append({'x': checkpoint_x, 'y': checkpoint_y})
-        print(self.checkpoints, file=sys.stderr)
 
     def get_checkpoint_by_id(self, i):
         return self.checkpoints[i]
@@ -193,7 +192,6 @@ class Player():
     def calculate_path(self, area):
         angle_abs = abs(self.angle)
         next_checkpoint = area.get_checkpoint_by_id(self.next_check_point_id)
-        print(next_checkpoint, file=sys.stderr)
         laps_count = area.get_laps_count()
         checkpoint_count = area.get_checkpoint_count()
         next_checkpoint_dist = dist(self.x, self.y, next_checkpoint['x'], next_checkpoint['y'])

@@ -15,7 +15,6 @@ for i in range(n):
         if val == None:
             cnt+=1
         temp = temp.setdefault(t, {})
-print(data, file=sys.stderr)
 # Write an action using print
 # To debug: print("Debug messages...", file=sys.stderr)
 

@@ -146,12 +146,10 @@ class Action():
             'score': -1
         }
         for index, player_actions in self.legal_actions_list.items():
-            print("index {0}".format(index), file=sys.stderr)
             current_player = self.players[index]
             current_height = int(self.area.get_value(current_player.x, current_player.y))
             for action, action_data in player_actions.items():
                 try:
-                    print("Action {0}".format(action), file=sys.stderr)
                     if action == 'PUSH&BUILD':
                         for dir_1, dir_data in action_data.items():
                             act_coors = self.area.get_corrs_from_direction(current_player.x, current_player.y, dir_1)
@@ -208,7 +206,6 @@ class Action():
                                     continue
                                 best_score2 = -1
                                 for dir_2 in dir_data:
-                                    print("dir_2 {0}".format(dir_1), file=sys.stderr)
                                     act2_coors = self.area.get_corrs_from_direction(act_coors['x'], act_coors['y'],
                                                                                     dir_2)
                                     act2_height = self.area.get_value(act2_coors['x'], act2_coors['y'])
@@ -239,7 +236,6 @@ class Action():
 
                 except IndexError:
                     continue
-        print("Legal Actions {0}".format(best_action), file=sys.stderr)
         return best_action
 
     def is_check_point(self, x, y):

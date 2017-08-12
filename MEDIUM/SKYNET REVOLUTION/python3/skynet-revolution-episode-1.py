@@ -30,24 +30,17 @@ def unsetter(c1, c2):
 n, l, e = [int(i) for i in input().split()]
 gat = []
 relations = {}
-print("LINKS: ", file=sys.stderr)
 for i in range(l):
     # n1: N1 and N2 defines a link between these nodes
     n1, n2 = [int(j) for j in input().split()]
-    print(n1, n2, file=sys.stderr)
     relations.setdefault(n1, []).append(n2)
     relations.setdefault(n2, []).append(n1)
-print(relations, file=sys.stderr)
-print("Exit gateways: ", file=sys.stderr)
 for i in range(e):
     ei = int(input())  # the index of a gateway node
-    print(ei, file=sys.stderr)
     gat.append(ei)
-print("GAME: ", file=sys.stderr)
 # game loop
 while True:
     si = int(input())  # The index of the node on which the Skynet agent is positioned this turn
-    print(si, file=sys.stderr)
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr)
     c1, c2 = getBestBloker(si, gat)

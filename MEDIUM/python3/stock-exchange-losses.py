@@ -7,20 +7,16 @@ import math
 diff = 0
 graf = []
 n = int(input())
-print(n, file=sys.stderr)
 for i in input().split():
     graf.append(int(i))
-print(graf, file=sys.stderr)
 for i in range(n - 1):
     for j in range(i + 1, n):
-        print(i, j, file=sys.stderr)
         if graf[i] < graf[j]:
             i = j
             break
         elif diff < graf[i] - graf[j]:
             diff = graf[i] - graf[j]
 
-print(diff, file=sys.stderr)
 if diff != 0:
     print("-" + str(diff))
 else:

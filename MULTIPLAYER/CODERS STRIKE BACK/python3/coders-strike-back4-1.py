@@ -125,9 +125,7 @@ def make_decision(es, si):
 
 
 def print_debug(es, si):
-    print("x: {0}, y: {1}, iknow: {2}".format(es.x, es.y, si.i_know_checkpoints), file=sys.stderr)
-    print(si.checkpoints, file=sys.stderr)
-
+    pass
 
 def loop(es, si):
     print_debug(es, si)

@@ -23,9 +23,7 @@ def get_back_action(atype, index, dir_1, dir_2):
 first_action = second_action = None
 k = 2
 size = int(input())
-print("SIZE: {0}".format(size), file=sys.stderr)
 units_per_player = int(input())
-print("units_per_player: {0}".format(units_per_player), file=sys.stderr)
 # game loop
 while True:
     map = []

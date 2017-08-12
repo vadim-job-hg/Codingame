@@ -159,7 +159,6 @@ class Player():
     def setParams(self, x, y):
         self.set_direction(self.x, self.y, x, y)
         self.speed, self.x, self.y = self.set_direction(self.x, self.y, x, y), x, y
-        print(self._title + ' speed: ' + str(self.speed), file=sys.stderr)
 
     def set_direction(self, x1, y1, x2, y2):
         self.vector = {'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2}
@@ -235,7 +234,6 @@ class Pod():
         to_p = Vector(self.player.vector['x2'], self.player.vector['y2'], 0)
         movement_vector = from_p.substract(to_p)  # .multiply(self.next_checkpoint_dist)
 
-        print(movement_vector, file=sys.stderr)
         target_vector = Vector(self.next_checkpoint_x, self.next_checkpoint_y, 0)
         if movement_vector.x > 10000:
             corection_vector = target_vector

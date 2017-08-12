@@ -21,7 +21,6 @@ class Area:
     elevator_coors = {}
 
     def isExitHere(self, floor):
-        print(floor, self.exit_floor, file=sys.stderr)
         if floor == self.exit_floor:
             return self.exit_pos
         else:
@@ -29,9 +28,7 @@ class Area:
 
     def getClosest(self, fl, cpos):
         closest, pos = self.width, 0
-        print(closest, pos, self.elevator_coors, file=sys.stderr)
         for floor in self.elevator_coors.get(fl):
-            print(floor, file=sys.stderr)
             if closest > abs(floor - cpos):
                 closest = abs(floor - cpos)
                 pos = floor
@@ -61,7 +58,6 @@ class Act:
                 return "RIGHT"
         else:
             floor_coor = self.area.getClosest(self.clone.clone_floor, self.clone.clone_pos)
-            print("Lift" + str(floor_coor), file=sys.stderr)
             if (floor_coor < self.clone.clone_pos):
                 return "LEFT"
             elif (floor_coor > self.clone.clone_pos):
@@ -76,7 +72,6 @@ class Act:
             print("WAIT")
         else:
             need_dir = self.needDirection()
-            print(need_dir, file=sys.stderr)
             if need_dir == "STOP":
                 self.wait_need = 1
                 print("WAIT")

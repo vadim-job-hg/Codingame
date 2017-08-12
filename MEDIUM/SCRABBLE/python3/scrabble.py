@@ -17,16 +17,13 @@ words = []
 n = int(input())
 for i in range(n):
     w = input()
-    print(w, file=sys.stderr)
     words.append(w)
 letters = input()
-print(letters, file=sys.stderr)
 max, winword = 0, ''
 for word in words:
     temp = 0
     temp_letters = list(letters)
     for letter in word:
-        print(temp_letters, file=sys.stderr)
         if (letter in temp_letters):
             temp+=values[letter]
             try:

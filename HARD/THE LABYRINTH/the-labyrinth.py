@@ -2,7 +2,6 @@ import sys
 import math
 import copy
 
-
 class Action:
     STATUS_SEARCH = 'status_search'
     STATUS_RETURN = 'status_return'

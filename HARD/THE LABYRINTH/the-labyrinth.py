@@ -47,8 +47,10 @@ class Action:
             self.direction = NEXT_DIRECTIONR[self.direction]
 
     def save_direction(self):
-        self.move_history[(self.kirk['c'] + NEXT_POSITION[self.direction]['cols'],
-                           self.kirk['r'] + NEXT_POSITION[self.direction]['rows'])] = self.direction
+        c = self.kirk['c'] + NEXT_POSITION[self.direction]['cols']
+        r = self.kirk['r'] + NEXT_POSITION[self.direction]['rows']
+        if self.move_history.get((c, r), None) is None:
+            self.move_history[(c, r)] = self.direction
 
     def load_direction(self, c, r):
         return self.move_history[(c, r)]

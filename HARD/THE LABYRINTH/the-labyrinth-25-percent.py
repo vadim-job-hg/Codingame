@@ -43,7 +43,9 @@ class Action:
 
     def touch_right_wall(self):
         self.direction = NEXT_DIRECTIONL[self.direction]
-        while self.get_next() == '#':
+        while self.get_next() == '#' or self.load_direction(self.kirk['c'] + NEXT_POSITION[self.direction]['cols'],
+                                                            self.kirk['r'] + NEXT_POSITION[self.direction][
+                                                                'rows']) is not None:
             self.direction = NEXT_DIRECTIONR[self.direction]
 
     def save_direction(self):
@@ -53,9 +55,9 @@ class Action:
             self.move_history[(c, r)] = self.direction
 
     def load_direction(self, c, r):
-        return self.move_history[(c, r)]
+        return self.move_history.get((c, r), None)
 
-    def ckeck_deadend(self, check):
+    def ckeck_deadend(self, minr, minc, maxr, maxc):
         pass
 
     def can_move(self):
@@ -64,21 +66,14 @@ class Action:
     def get_direction(self):
         if self.get_by(self.kirk['c'], self.kirk['r']) == 'C':
             self.status = self.STATUS_RETURN
-            # self.direction = BACK_DIRECTION[self.direction]
+
         if self.status == self.STATUS_SEARCH:
             minr = (0, self.kirk['r'] - SCAN_RADIUS)[self.kirk['r'] - SCAN_RADIUS > 0]
             minc = (0, self.kirk['c'] - SCAN_RADIUS)[self.kirk['c'] - SCAN_RADIUS > 0]
             maxr = (self.rows, self.kirk['r'] + SCAN_RADIUS)[self.kirk['r'] + SCAN_RADIUS < self.rows]
             maxc = (self.cols, self.kirk['c'] + SCAN_RADIUS)[self.kirk['c'] + SCAN_RADIUS < self.cols]
-            need_to_check = [
-                {'c': self.kirk['c'], 'r': maxr, 'back': 'UP', 'check': ['LEFT', 'RIGHT', 'DOWN']},
-                {'c': self.kirk['c'], 'r': minr, 'back': 'DOWN', 'check': ['LEFT', 'RIGHT', 'UP']},
-                {'c': maxc, 'r': self.kirk['r'], 'back': 'LEFT', 'check': ['UP', 'RIGHT', 'DOWN']},
-                {'c': minc, 'r': self.kirk['r'], 'back': 'RIGHT', 'check': ['LEFT', 'UP', 'DOWN']},
-            ]
+            self.ckeck_deadend(minr, minc, maxr, maxc)
 
-            for check in need_to_check:
-                self.ckeck_deadend(check)
             self.touch_right_wall()
             self.save_direction()
         else:

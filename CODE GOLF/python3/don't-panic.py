@@ -1,8 +1,6 @@
 e,v,W,B={},[],"WAIT",'BLOCK'
 o,l,u,z,s,t,a,r=[int(i) for i in input().split()]
-for i in range(r):
- v.append([int(j) for j in input().split()])
- e[v[i][0]]=v[i][1]
+for i in range(r):v.append([int(j) for j in input().split()]);e[v[i][0]]=v[i][1]
 while 1:
  f,p,d=input().split()
  f,p=int(f),int(p)

@@ -5,15 +5,15 @@ import math
 # Auto-generated code below aims at helping you parse
 # the standard raw_input according to the problem statement.
 dictionary = {}
-n = int(raw_input())  # Number of elements which make up the association table.
-q = int(raw_input())  # Number Q of file names to be analyzed.
+n = int(input())  # Number of elements which make up the association table.
+q = int(input())  # Number Q of file names to be analyzed.
 for i in range(n):
     # ext: file extension
     # mt: MIME type.
-    ext, mt = raw_input().split()
+    ext, mt = input().split()
     dictionary[ext.lower()] = mt    
 for i in range(q):
-    fname = raw_input()  # One file name per line.    
+    fname = input()  # One file name per line.
     farr = fname.split('.')
     if len(farr)>1:
         try:

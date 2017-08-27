@@ -28,7 +28,6 @@ class Thor:
         for giant in self.giants:
             xsumm += giant['x']
             ysumm += giant['y']
-            print(giant, file=sys.stderr)
         return int(xsumm / self.n), int(ysumm / self.n)
 
     def check_if_strike(self):
@@ -39,7 +38,6 @@ class Thor:
 
     def move(self):
         dir_x, dir_y = self.find_the_middle()
-        print(dir_x, dir_y, self.tx, self.ty, file=sys.stderr)
         if self.check_if_strike():
             action = "STRIKE"
         else:

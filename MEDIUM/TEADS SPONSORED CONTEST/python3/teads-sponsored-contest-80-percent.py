@@ -25,7 +25,6 @@ for i in range(n):
     keys[yi] = k+1
     connections.setdefault(xi, []).append(yi)
     connections.setdefault(yi, []).append(xi)
-print(keys, file=sys.stderr)
 temp = []
 for i, v in keys.items():
     if v>1:

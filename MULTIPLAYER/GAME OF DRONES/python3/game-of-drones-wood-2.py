@@ -29,7 +29,6 @@ class Act:
 
     def run(self):
         for i in range(1, self.d + 1):
-            print(i, self.z, (i + self.z) % self.z, file=sys.stderr)
             zone = self.zones[(i + self.z) % self.z]
             # Write an action using print
             # To debug: print("Debug messages...", file=sys.stderr)

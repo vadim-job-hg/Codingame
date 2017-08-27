@@ -21,7 +21,6 @@ class Area:
     elevator_coors = {}
 
     def isExitHere(self, floor):
-        print(floor, self.exit_floor, file=sys.stderr)
         if floor == self.exit_floor:
             return self.exit_pos
         else:
@@ -29,9 +28,7 @@ class Area:
 
     def getClosest(self, fl, cpos):
         closest, pos = self.width, None
-        print(closest, pos, self.elevator_coors, file=sys.stderr)
         for floor in self.elevator_coors.get(fl, []):
-            print(floor, file=sys.stderr)
             if closest > abs(floor - cpos):
                 closest = abs(floor - cpos)
                 pos = floor
@@ -43,7 +40,6 @@ class Area:
         for i in range(self.nb_elevators):
             elevator_floor, elevator_pos = [int(j) for j in input().split()]
             self.elevator_coors.setdefault(elevator_floor, []).append(elevator_pos)
-        print(self.elevator_coors, file=sys.stderr)
         self.build_best_path()
 
 
@@ -70,7 +66,7 @@ class Act:
         another_floors = [x for x in range(self.exit_floor) if x not in self.each_floor_action.keys()]
 
     def calculate(self):
-
+        pass
     def needDirection(self):
         if self.wait_need > 0:
             self.wait_need = self.wait_need - 1

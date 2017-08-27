@@ -23,16 +23,13 @@ strike = 0
 for letter in message:    
     nums = str(string2bits(letter))
     nums = ("0"*(7-len(nums)))+nums
-    print("NUMBERS: {0}".format(nums), file=sys.stderr)    
     for i in range(0, len(nums)):
         if last_num != nums[i]:
-            print("STRIKE: {0}".format(strike), file=sys.stderr)
             if strike>0:
                 omessage.append(form_words(last_num, strike))
             strike = 0            
         last_num = nums[i]
         strike = strike + 1
-print("STRIKE: {0}".format(strike), file=sys.stderr)
 if strike>0:
     omessage.append(form_words(last_num, strike))                        
 print("{0}".format(" ".join(omessage)))    

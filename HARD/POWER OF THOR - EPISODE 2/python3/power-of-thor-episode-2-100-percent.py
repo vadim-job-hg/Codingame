@@ -11,7 +11,6 @@ class Thor:
     h = 0
     n = 0
     giants = []
-    closest_giants = []
     action = "STRIKE"
 
     def __init__(self):
@@ -32,14 +31,16 @@ class Thor:
 
         centerX /= len(self.giants)
         centerY /= len(self.giants)
+        print(int(centerX), int(centerY), file=sys.stderr)
+        return [int(centerX), int(centerY)]
 
-        return [centerX, centerY]
-
-    def _closest(self):
-        self.closest_giants.clear()
+    def _closest(self, x, y):
+        closest_giants = []
         for giant in self.giants:
-            if ((abs(giant['x'] - self.tx) <= WIDE) and (abs(giant['y'] - self.ty) <= WIDE)):
-                self.closest_giants.append(giant)
+            if ((abs(giant['x'] - x) <= WIDE) and (abs(giant['y'] - y) <= WIDE)):
+                closest_giants.append(giant)
+
+        return closest_giants
 
     def giants_too_close(self, x, y):
         for giant in self.giants:
@@ -85,58 +86,59 @@ class Thor:
                 self.action = "WAIT"
 
     def dist(self, first, second):
-        return abs(first[0] - second[0]) + abs(first[1] - second[1])
+        print(first[0], second[0], first[1], second[1], file=sys.stderr)
+        print(str(int(abs(first[0] - second[0]) + abs(first[1] - second[1]))) + " DIST", file=sys.stderr)
+        return int(abs(first[0] - second[0]) + abs(first[1] - second[1]))
 
     def _run_away(self):
         profit = []
-        len_closest_giants = len(self.closest_giants)
-        if self.tx > 0:
-            x = self.tx - 1
+        if self.tx < 40:
+            x = self.tx + 1
             y = self.ty
-            if not (self.giants_too_close(x, y)):
-                profit.append(["W", [len_closest_giants, [x, y]]])
+            if (not (self.giants_too_close(x, y))):
+                profit.append(["E", [len(self._closest(x, y)), [x, y]]])
 
         if self.ty > 0:
             x = self.tx
             y = self.ty - 1
             if not (self.giants_too_close(x, y)):
-                profit.append(["N", [len_closest_giants, [x, y]]])
-
-        if self.tx < 40:
-            x = self.tx + 1
-            y = self.ty
-            if (not (self.giants_too_close(x, y))):
-                profit.append(["E", [len_closest_giants, [x, y]]])
-
-        if self.ty < 18:
-            x = self.tx
-            y = self.ty + 1
-            if not (self.giants_too_close(x, y)):
-                profit.append(["S", [len_closest_giants, [x, y]]])
-
-        if (self.tx > 0) and (self.ty > 0):
-            x = self.tx - 1
-            y = self.ty - 1
-            if not (self.giants_too_close(x, y)):
-                profit.append(["NW", [len_closest_giants, [x, y]]])
+                profit.append(["N", [len(self._closest(x, y)), [x, y]]])
 
         if (self.tx < 40) and (self.ty > 0):
             x = self.tx + 1
             y = self.ty - 1
             if not (self.giants_too_close(x, y)):
-                profit.append(["NE", [len_closest_giants, [x, y]]])
+                profit.append(["NE", [len(self._closest(x, y)), [x, y]]])
 
         if (self.tx > 0) and (self.ty > 0):
             x = self.tx - 1
             y = self.ty - 1
             if not (self.giants_too_close(x, y)):
-                profit.append(["SW", [len_closest_giants, [x, y]]])
+                profit.append(["NW", [len(self._closest(x, y)), [x, y]]])
+
+        if self.ty < 18:
+            x = self.tx
+            y = self.ty + 1
+            if not (self.giants_too_close(x, y)):
+                profit.append(["S", [len(self._closest(x, y)), [x, y]]])
 
         if (self.tx < 40) and (self.ty < 18):
             x = self.tx + 1
             y = self.ty + 1
             if not (self.giants_too_close(x, y)):
-                profit.append(["SE", [len_closest_giants, [x, y]]])
+                profit.append(["SE", [len(self._closest(x, y)), [x, y]]])
+
+        if (self.tx > 0) and (self.ty > 0):
+            x = self.tx - 1
+            y = self.ty - 1
+            if not (self.giants_too_close(x, y)):
+                profit.append(["SW", [len(self._closest(x, y)), [x, y]]])
+
+        if self.tx > 0:
+            x = self.tx - 1
+            y = self.ty
+            if not (self.giants_too_close(x, y)):
+                profit.append(["W", [len(self._closest(x, y)), [x, y]]])
 
         self.action = "STRIKE"
         bestOption = [0, [0, 0]]
@@ -144,9 +146,10 @@ class Thor:
         center = self.find_center()
         for i in range(len(profit)):
             option = profit[i]
-            print(option, file=sys.stderr)
+            print(option[0], file=sys.stderr)
+            print("{0}=={1}".format(option[1][0], bestOption[0]), file=sys.stderr)
             if ((option[1][0] > bestOption[0]) or (
-                (option[1][0] == bestOption[0]) and (self.dist(option[1][1], center) > bestDist))):
+                        (option[1][0] == bestOption[0]) and (self.dist(option[1][1], center) > bestDist))):
                 bestOption = option[1]
                 self.action = option[0]
                 bestDist = self.dist(bestOption[1], center)
@@ -163,8 +166,8 @@ class Thor:
             self._run_away()
 
     def move(self):
-        self._closest()
-        if len(self.giants) == len(self.closest_giants):
+        closest_giants = self._closest(self.tx, self.ty)
+        if len(self.giants) == len(closest_giants):
             self.action = "STRIKE"
         else:
             self._find_best_move()

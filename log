@@ -1,0 +1,143 @@
+Game information:
+Thor is preparing to fight
+Thor position = (0,9), Giants left = 15, Hits left = 2.
+01
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (1,9), Giants left = 15, Hits left = 2.
+02
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (2,9), Giants left = 15, Hits left = 2.
+03
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (3,9), Giants left = 15, Hits left = 2.
+04
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (4,9), Giants left = 15, Hits left = 2.
+05
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (5,9), Giants left = 15, Hits left = 2.
+06
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (6,9), Giants left = 15, Hits left = 2.
+07
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (7,9), Giants left = 15, Hits left = 2.
+08
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (8,9), Giants left = 15, Hits left = 2.
+09
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (9,9), Giants left = 15, Hits left = 2.
+10
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (10,9), Giants left = 15, Hits left = 2.
+11
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (11,9), Giants left = 15, Hits left = 2.
+12
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (12,9), Giants left = 15, Hits left = 2.
+13
+21
+Standard Output Stream:
+NW
+Game information:
+Thor is moving...
+Thor position = (11,8), Giants left = 15, Hits left = 2.
+14
+21
+Standard Output Stream:
+NE
+Game information:
+Thor is moving...
+Thor position = (12,7), Giants left = 15, Hits left = 2.
+15
+21
+Standard Output Stream:
+NE
+Game information:
+Thor is moving...
+Thor position = (13,6), Giants left = 15, Hits left = 2.
+16
+21
+Standard Output Stream:
+NE
+Game information:
+Thor is moving...
+Thor position = (14,5), Giants left = 15, Hits left = 2.
+17
+21
+Standard Output Stream:
+NE
+Game information:
+Thor is moving...
+Thor position = (15,4), Giants left = 15, Hits left = 2.
+18
+21
+Standard Output Stream:
+E
+Game information:
+Thor is moving...
+Thor position = (16,4), Giants left = 15, Hits left = 2.
+19
+21
+Standard Output Stream:
+NE
+Game information:
+Thor is moving...
+Thor position = (17,3), Giants left = 15, Hits left = 2.
+20
+21
+Standard Output Stream:
+STRIKE
+Game information:
+Success: giants were defeated
+Thor position = (17,3), Giants left = 0, Hits left = 1.

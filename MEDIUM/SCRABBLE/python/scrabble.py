@@ -1,9 +1,4 @@
 # https://www.codingame.com/ide/puzzle/scrabble
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard raw_input according to the problem statement.
 values = {
     'e':1, 'a':1, 'i':1, 'o':1, 'n':1, 'r':1, 't':1, 'l':1, 's':1, 'u':1,
     'd':2, 'g':2,

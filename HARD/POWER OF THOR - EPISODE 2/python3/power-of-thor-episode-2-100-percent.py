@@ -1,10 +1,6 @@
 # based on https://github.com/texus/codingame/blob/master/SingePlayer/Hard/Thor%20VS%20Giants.cpp
 import sys
-import math
-
 WIDE = 4
-
-
 class Thor:
     tx = 0
     ty = 0
@@ -86,8 +82,6 @@ class Thor:
                 self.action = "WAIT"
 
     def dist(self, first, second):
-        print(first[0], second[0], first[1], second[1], file=sys.stderr)
-        print(str(int(abs(first[0] - second[0]) + abs(first[1] - second[1]))) + " DIST", file=sys.stderr)
         return int(abs(first[0] - second[0]) + abs(first[1] - second[1]))
 
     def _run_away(self):
@@ -146,8 +140,6 @@ class Thor:
         center = self.find_center()
         for i in range(len(profit)):
             option = profit[i]
-            print(option[0], file=sys.stderr)
-            print("{0}=={1}".format(option[1][0], bestOption[0]), file=sys.stderr)
             if ((option[1][0] > bestOption[0]) or (
                         (option[1][0] == bestOption[0]) and (self.dist(option[1][1], center) > bestDist))):
                 bestOption = option[1]

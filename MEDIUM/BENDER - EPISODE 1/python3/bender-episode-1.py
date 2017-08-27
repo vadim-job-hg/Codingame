@@ -1,9 +1,6 @@
 import sys
 import math
 
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 class Action:
     DIR_RULES = {'WEST': {'y': 0, 'x': -1}, 'EAST': {'y': 0, 'x': 1}, 'SOUTH': {'y': 1, 'x': 0},
                  'NORTH': {'y': -1, 'x': 0}}
@@ -87,7 +84,5 @@ class Action:
             print(str1)
         return True
 
-# Write an action using print
-# To debug: print("Debug messages...", file=sys.stderr)
 act = Action()
 act.run()

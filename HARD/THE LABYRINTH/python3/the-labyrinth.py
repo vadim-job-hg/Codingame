@@ -1,6 +1,6 @@
 # based on https://github.com/Marqin/ai4games/blob/master/labirynth/labirynth.py
 
-Adapted for Python 3
+# Adapted for Python 3
 """
     This code uses BFS algorithm to find shortest path between Kirks position
     and our target. At first our targets are all not-scanned cells (and we

@@ -1,9 +1,4 @@
 # https://www.codingame.com/ide/puzzle/the-last-crusade-episode-1
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 MAP_RULES = {
     '0':{},
     '1':{'LEFT':'BOTTOM', 'TOP':'BOTTOM', 'RIGHT':'BOTTOM'},
@@ -41,9 +36,5 @@ while True:
     yi = int(yi)
     rule = DIR_RULES[MAP_RULES[map[yi][xi]][pos]]
     x_to, y_to = xi+rule['x'], yi+rule['y']
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
-
-
     # One line containing the X Y coordinates of the room in which you believe Indy will be on the next turn.
     print("{0} {1}".format(x_to, y_to))

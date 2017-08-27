@@ -30,8 +30,6 @@ class Act:
     def run(self):
         for i in range(1, self.d + 1):
             zone = self.zones[(i + self.z) % self.z]
-            # Write an action using print
-            # To debug: print("Debug messages...", file=sys.stderr)
             # output a destination point to be reached by one of your drones. The first line corresponds to the first of your drones that you were provided as input, the next to the second, etc.
             print("{0} {1}".format(zone['x'], zone['y']))
 

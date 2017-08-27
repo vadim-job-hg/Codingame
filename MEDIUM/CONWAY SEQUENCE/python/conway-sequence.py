@@ -1,6 +1,4 @@
 #https://www.codingame.com/ide/puzzle/conway-sequence
-import sys
-import math
 r = int(raw_input())
 l = int(raw_input())
 str_s = []

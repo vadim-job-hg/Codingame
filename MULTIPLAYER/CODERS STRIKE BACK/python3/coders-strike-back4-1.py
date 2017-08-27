@@ -1,8 +1,5 @@
 # THE WHOLE CODE IS FROM
 # https://github.com/jmistx/coders-strike-back/blob/master/startegy_1.py
-
-
-import sys
 import math
 
 def diff(v1, v2):
@@ -23,18 +20,10 @@ def angle(v1, v2):
 
 def to_grad(angle):
     return angle / math.pi * 180
-
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 # next_checkpoint_x: x position of the next check point
 # next_checkpoint_y: y position of the next check point
 # next_checkpoint_dist: distance to the next checkpoint
 # next_checkpoint_angle: angle between your pod orientation and the direction of the next checkpoint
-
-# Write an action using print
-
-# To debug: print("Debug messages...", file=sys.stderr)
 
 # You have to output the target position
 # followed by the power (0 <= thrust <= 100)

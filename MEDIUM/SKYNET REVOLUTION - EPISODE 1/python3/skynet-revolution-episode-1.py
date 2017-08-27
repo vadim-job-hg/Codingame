@@ -1,11 +1,4 @@
 #https://www.codingame.com/ide/puzzle/skynet-revolution-episode-1
-import sys
-import math
-
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
-
 # n: the total number of nodes in the level, including the gateways
 # l: the number of links
 # e: the number of exit gateways
@@ -41,8 +34,6 @@ for i in range(e):
 # game loop
 while True:
     si = int(input())  # The index of the node on which the Skynet agent is positioned this turn
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
     c1, c2 = getBestBloker(si, gat)
     unsetter(c1, c2)
     # Example: 0 1 are the indices of the nodes you wish to sever the link between

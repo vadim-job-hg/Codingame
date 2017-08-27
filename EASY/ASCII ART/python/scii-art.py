@@ -1,7 +1,4 @@
 # https://www.codingame.com/ide/puzzle/ascii-art
-import sys
-import math
-
 string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?"
 l = int(raw_input())
 h = int(raw_input())

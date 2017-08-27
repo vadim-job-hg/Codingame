@@ -1,9 +1,5 @@
 # https://www.codingame.com/ide/puzzle/defibrillators
-import sys
 import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 def get_distance(lat_a, lat_b, long_a, long_b):
     x = (long_b - long_a)*math.cos((lat_b + lat_a)/2)
     y = lat_b - lat_a
@@ -21,7 +17,4 @@ for i in range(n):
     if distance<closest:
         current = defib
         closest = distance
-# Write an action using print
-# To debug: print("Debug messages...", file=sys.stderr)
-
 print(current['name'])

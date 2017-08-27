@@ -3,9 +3,6 @@ import math
 
 MAX_HEIGHT = 4
 
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 def obj(x, y, d):
     return {'x': x, 'y': y, 'd': d}
 
@@ -102,6 +99,4 @@ while True:
     enemy.scan_pos()
     player.get_legal_actions()
     player.run(area, enemy)
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
 

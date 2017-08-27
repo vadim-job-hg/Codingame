@@ -1,11 +1,4 @@
 # https://www.codingame.com/ide/puzzle/coders-strike-back
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
-
-
 # game loop
 while True:
     # next_checkpoint_x: x position of the next check point
@@ -15,9 +8,6 @@ while True:
     x, y, next_checkpoint_x, next_checkpoint_y, next_checkpoint_dist, next_checkpoint_angle = [int(i) for i in
                                                                                                input().split()]
     opponent_x, opponent_y = [int(i) for i in input().split()]
-
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
     trust = 0
     if next_checkpoint_angle > 90 or next_checkpoint_angle < -90:
         trust = str(10)

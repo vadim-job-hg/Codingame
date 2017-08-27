@@ -1,10 +1,4 @@
 # https://www.codingame.com/ide/puzzle/mars-lander-episode-1
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
-
 surface_n = int(input())  # the number of points used to draw the surface of Mars.
 land_x_prev = land_y_prev = 0
 landing_start = 0
@@ -27,8 +21,6 @@ while True:
     # rotate: the rotation angle in degrees (-90 to 90).
     # power: the thrust power (0 to 4).
     x, y, h_speed, v_speed, fuel, rotate, power = [int(i) for i in input().split()]
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
     if(landing_start<x<landing_end):
         dist = y-landing_height
         if v_speed<-35:

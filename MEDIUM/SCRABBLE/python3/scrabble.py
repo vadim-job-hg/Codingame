@@ -1,9 +1,4 @@
 # https://www.codingame.com/ide/puzzle/scrabble
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 values = {
     'e':1, 'a':1, 'i':1, 'o':1, 'n':1, 'r':1, 't':1, 'l':1, 's':1, 'u':1,
     'd':2, 'g':2,
@@ -37,7 +32,4 @@ for word in words:
     if temp>max:
         max = temp
         winword = word
-# Write an action using print
-# To debug: print("Debug messages...", file=sys.stderr)
 print(winword)
-#print("invalid word")

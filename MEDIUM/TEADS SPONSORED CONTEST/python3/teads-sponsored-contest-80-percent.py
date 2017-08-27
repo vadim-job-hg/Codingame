@@ -1,8 +1,3 @@
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 connections = {}
 
 def calculate(n, nt):
@@ -29,9 +24,5 @@ temp = []
 for i, v in keys.items():
     if v>1:
         temp.append(calculate(i, -1))
-# Write an action using print
-# To debug: print("Debug messages...", file=sys.stderr)
-
-
 # The minimal amount of steps required to completely propagate the advertisement
 print(min(temp))

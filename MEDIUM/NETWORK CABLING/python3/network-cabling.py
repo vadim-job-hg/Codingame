@@ -11,7 +11,6 @@ housesY.sort()
 meanlow = housesY[len(housesY)//2]
 meanhigh = housesY[len(housesY)//2+1] if len(housesY) > 1 else housesY[0]
 
-# To debug: print("Debug messages...", file=sys.stderr)
 lowest = min(housesX)
 highest = max(housesX)
 result1 = sum(map(lambda y: abs(meanlow - y), housesY))

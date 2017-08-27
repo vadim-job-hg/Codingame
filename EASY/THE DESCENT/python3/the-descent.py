@@ -1,6 +1,4 @@
 # https://www.codingame.com/ide/puzzle/the-descent
-import sys
-import math
 # game loop
 while True:
     mountain_max = 0

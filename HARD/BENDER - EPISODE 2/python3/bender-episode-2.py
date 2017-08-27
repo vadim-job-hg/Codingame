@@ -1,6 +1,4 @@
 # https://www.codingame.com/ide/puzzle/bender-episode-2
-import sys
-import math
 def get(number):
     global room_best_cost
     global rooms

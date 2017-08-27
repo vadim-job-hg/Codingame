@@ -1,6 +1,4 @@
 # https://www.codingame.com/ide/puzzle/dwarfs-standing-on-the-shoulders-of-giants
-import sys
-import math
 connection = {}
 
 

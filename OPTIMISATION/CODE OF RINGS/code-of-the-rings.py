@@ -1,7 +1,3 @@
-import sys
-import math
-
-
 class Area:
     LETTERS_PLUS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     LETTERS_MINUS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "[::-1]

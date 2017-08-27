@@ -3,9 +3,6 @@ import math
 
 WIDE = 4
 
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 class Thor:
     tx = 0
     ty = 0
@@ -63,8 +60,3 @@ thor = Thor()
 while True:
     thor.scan()
     thor.move()
-
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
-    # print(str(current_x), file=sys.stderr)
-

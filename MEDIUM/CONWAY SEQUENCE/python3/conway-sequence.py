@@ -1,14 +1,6 @@
 #https://www.codingame.com/ide/puzzle/conway-sequence
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
-
 r = int(input())
 l = int(input())
-#print(r, file=sys.stderr)
-#print(l, file=sys.stderr)
 str_s = []
 array = [r]
 for i in range(1, l):
@@ -25,6 +17,5 @@ for i in range(1, l):
         last = v
     new_array.append(num)
     new_array.append(last)
-    #print(new_array, file=sys.stderr)
     array = new_array
 print( ' '.join(str(v) for v in array))

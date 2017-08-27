@@ -1,6 +1,4 @@
 # https://www.codingame.com/ide/puzzle/power-of-thor-episode-1
-import sys
-import math
 light_x, light_y, initial_tx, initial_ty = [int(i) for i in raw_input().split()]
 current_x, current_y = initial_tx, initial_ty
 while True:

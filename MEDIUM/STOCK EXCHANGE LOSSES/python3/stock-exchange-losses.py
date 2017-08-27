@@ -1,9 +1,4 @@
 # https://www.codingame.com/training/medium/stock-exchange-losses
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 diff = 0
 graf = []
 n = int(input())

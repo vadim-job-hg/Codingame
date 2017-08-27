@@ -1,10 +1,4 @@
 # https://www.codingame.com/ide/puzzle/temperatures
-import sys
-import math
-
-# Auto-generated code below aims at helping you parse
-# the standard raw_input according to the problem statement.
-
 n = int(raw_input())  # the number of temperatures to analyse
 temps = raw_input()  # the n temperatures expressed as integers ranging from -273 to 5526
 if n !=0:

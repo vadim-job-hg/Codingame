@@ -1,9 +1,5 @@
 # https://www.codingame.com/ide/puzzle/the-gift
-import sys
 import math
-
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
 budget_left = []
 budget_calculated=[]
 oods_left = n = int(input())

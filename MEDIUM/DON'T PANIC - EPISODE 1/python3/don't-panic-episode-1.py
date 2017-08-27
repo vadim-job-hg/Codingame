@@ -1,9 +1,6 @@
 # https://www.codingame.com/ide/puzzle/don't-panic-episode-1
-import sys
-import math
 
 LOWER_FLOOR = LEFTMOST = 0
-
 
 class LeadClone:
     clone_pos = 0

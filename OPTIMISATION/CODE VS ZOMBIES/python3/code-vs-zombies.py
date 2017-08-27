@@ -70,8 +70,5 @@ act = Action()
 while True:
     act.read_situation()
     act.klaatu_barada_nikhe_khe_khe()
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
-
     # Your destination coordinates
 

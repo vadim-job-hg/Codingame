@@ -1,6 +1,4 @@
 #https://www.codingame.com/ide/puzzle/skynet-revolution-episode-1
-import sys
-import math
 def getBestBloker(si, gat):
     global relations
     for g in gat:

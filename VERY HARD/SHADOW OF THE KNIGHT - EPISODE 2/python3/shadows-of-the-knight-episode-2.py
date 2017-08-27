@@ -3,9 +3,6 @@
 import sys
 import math
 
-# Auto-generated code below aims at helping you parse
-# the standard input according to the problem statement.
-
 # w: width of the building.
 # h: height of the building.
 w, h = [int(i) for i in input().split()]
@@ -27,8 +24,6 @@ def fillMatrixAndFindCoors(x0, y0):
 
 while True:
     bomb_dir = input()  # the direction of the bombs from batman's current location (U, UR, R, DR, D, DL, L or UL)
-    # Write an action using print
-    # To debug: print("Debug messages...", file=sys.stderr)
     if bomb_dir.find("WARMER") > -1:
         maxy = y0 - 1
     elif bomb_dir.find("COLDER") > -1:

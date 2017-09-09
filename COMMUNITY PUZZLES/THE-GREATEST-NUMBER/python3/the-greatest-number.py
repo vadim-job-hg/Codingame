@@ -1,3 +1,4 @@
+# adapted from https://github.com/texus/codingame/blob/master/Community%20Puzzles/The%20greatest%20number.cs
 import sys
 import math
 

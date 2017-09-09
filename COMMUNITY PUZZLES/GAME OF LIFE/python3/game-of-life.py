@@ -9,8 +9,8 @@ def count(r, c):
     global height
     array = [
         [-1, -1], [-1, 0], [-1, 1],
-        [0, -1], [0, 1],
-        [1, -1], [1, 0], [1, 1]]
+        [ 0, -1],          [ 0, 1],
+        [ 1, -1], [ 1, 0], [1, 1]]
     count = 0
     for item in array:
         rn = item[0] + r

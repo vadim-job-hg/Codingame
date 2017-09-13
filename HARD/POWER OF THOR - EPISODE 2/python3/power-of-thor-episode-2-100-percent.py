@@ -1,4 +1,3 @@
-# based on https://github.com/texus/codingame/blob/master/SingePlayer/Hard/Thor%20VS%20Giants.cpp
 import sys
 WIDE = 4
 class Thor:

@@ -1,9 +1,4 @@
 <?php
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
-
 fscanf(STDIN, "%d",
     $surfaceN // the number of points used to draw the surface of Mars.
 );
@@ -17,6 +12,7 @@ for ($i = 0; $i < $surfaceN; $i++)
     );
     if($lastY==$landY){
         $landing_height = $lastY;
+        break;
     }
     $lastY = $landY;
 }
@@ -47,4 +43,3 @@ while (TRUE)
     // 2 integers: rotate power. rotate is the desired rotation angle (should be 0 for level 1), power is the desired thrust power (0 to 4).
     echo "0 ".$power."\n";
 }
-?>

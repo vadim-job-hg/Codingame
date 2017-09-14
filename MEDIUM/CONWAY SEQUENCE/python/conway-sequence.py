@@ -1,7 +1,6 @@
 #https://www.codingame.com/ide/puzzle/conway-sequence
 r = int(raw_input())
 l = int(raw_input())
-str_s = []
 array = [r]
 for i in range(1, l):
     new_array = []

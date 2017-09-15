@@ -7,7 +7,7 @@ def get(x=0, y=0):
     global w
     global h
     global visited
-    have = visited.get((x,y), False) 
+    have = visited.get((x,y), False)
     if have:
         return have
     current = food[y][x]

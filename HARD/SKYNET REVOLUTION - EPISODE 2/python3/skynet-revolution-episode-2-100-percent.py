@@ -10,12 +10,12 @@ class Network:
         #graph = new int[N][N];
         #gateways = new boolean[N];
         #nodeDanger = new int[N];
-        this.g=g
+        self.g=g
 
 
     def addLink(self, n1, n2):
-        relations.setdefault(n2, {})[n1]=1
-        relations.setdefault(n1, {})[n2]=1
+        self.graph.setdefault(n2, {})[n1]=1
+        self.graph.setdefault(n1, {})[n2]=1
 
 
 
@@ -47,9 +47,10 @@ class Network:
 
     #Calculates distances from agent, if the path always contains nodes that link to gateways then that distance is 0, otherwise it incurs a penalty if the path contains illogical hops
     def distanceFromSI(self):
+        '''
         int[] distances = new int[graph.length];
         Arrays.fill(distances, Integer.MAX_VALUE);
-        int emptyCells = graph.length;
+        emptyCells = graph.length;
         int checkAgainst = -1;
         List<Integer> queue = new LinkedList<Integer>();
         Arrays.fill(distances, Integer.MAX_VALUE);
@@ -68,10 +69,13 @@ class Network:
             }
         }
         return distances
+        '''
+        pass
 
 
-    def severBestLink(self)
-        //First we see if SI can jump to an exit node this turn, if so then we sever that link.
+    def severBestLink(self):
+        '''
+        #First we see if SI can jump to an exit node this turn, if so then we sever that link.
         for(int i = 0; i<graph.length; i++)
             if(graph[i][SI] == 2){
                 graph[i][SI] = 0;
@@ -105,6 +109,8 @@ class Network:
             }
         }
         return "Zolda"
+        '''
+        pass
 
 n, l, e = [int(i) for i in input().split()]
 
@@ -115,11 +121,11 @@ for i in range(l):
     n1, n2 = [int(j) for j in input().split()]
     network.addLink(n1, n2)
 
-for i in range(e):
-    network.addGateWay(int(input()))
+#for i in range(e):
+#    network.addGateWay(int(input()))
 
 # game loop
-while True:
-    si = int(input())  # The index of the node on which the Skynet agent is positioned this turn
-    network.setSI(si)
-    print(network.severBestLink())
+#while True:
+#   si = int(input())  # The index of the node on which the Skynet agent is positioned this turn
+#    network.setSI(si)
+#    print(network.severBestLink())

@@ -19,7 +19,7 @@ class Network:
 
 
 
-    def addGateWay(EI):
+    def addGateWay(self, EI):
         self.gateways[EI] = True
         for i in range(len(self.graph)):
             if(self.graph[i][EI] != 0):
@@ -28,25 +28,25 @@ class Network:
                 self.graph[EI][i] = 2
 
         self.gatewayCounter+=1
-        if(self.gatewayCounter == G)
+        if(self.gatewayCounter == G):
             self.calculateDnagerForNodes()
 
 
-    def calculateDnagerForNodes():
-        for(int i = 0; i < nodeDanger.length; i++){
-            if(not(gateways[i])):
-                for(int j = 0; j < graph[i].length; j++)
-                    if(graph[i][j] == 2)
-                        nodeDanger[i]++;
-        }
+    def calculateDnagerForNodes(self):
+        for i in range(len(self.nodeDanger)):
+            if(not(self.gateways[i])):
+                for i in range(len(self.graph[i])):
+                    if(self.graph[i][j] == 2):
+                        self.nodeDanger[i]+=1
 
 
-    def setSI(SI):
-        this.SI = SI;
+
+    def setSI(self, SI):
+        this.SI = SI
 
 
     #Calculates distances from agent, if the path always contains nodes that link to gateways then that distance is 0, otherwise it incurs a penalty if the path contains illogical hops
-    def distanceFromSI():
+    def distanceFromSI(self):
         int[] distances = new int[graph.length];
         Arrays.fill(distances, Integer.MAX_VALUE);
         int emptyCells = graph.length;
@@ -70,7 +70,7 @@ class Network:
         return distances
 
 
-    def severBestLink()
+    def severBestLink(self)
         //First we see if SI can jump to an exit node this turn, if so then we sever that link.
         for(int i = 0; i<graph.length; i++)
             if(graph[i][SI] == 2){
@@ -79,7 +79,7 @@ class Network:
                 nodeDanger[SI]--;
                 return i+" "+SI;
             }
-        //We find the "closest" dangerous node, meaning node which links to two or more gateways
+        # We find the "closest" dangerous node, meaning node which links to two or more gateways
         int[] distances = distanceFromSI();
         int smallestDoubleDist = Integer.MAX_VALUE;
         int closestDoubleNode = -1;

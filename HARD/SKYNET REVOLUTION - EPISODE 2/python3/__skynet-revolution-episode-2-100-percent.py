@@ -1,3 +1,6 @@
+import math
+import sys
+
 class Network:
     graph = {}
     gateways = {}
@@ -17,18 +20,17 @@ class Network:
         self.graph.setdefault(n2, {})[n1]=1
         self.graph.setdefault(n1, {})[n2]=1
 
-
-
     def addGateWay(self, EI):
-        self.gateways[EI] = True
+        self.gateways[EI] = True        
         for i in range(len(self.graph)):
-            if(self.graph[i][EI] != 0):
+            if(self.graph.get(i, {}).get(EI, 0) != 0):
                 self.graph[i][EI] = 2
-            if(self.graph[EI][i] != 0):
+            if(self.graph.get(EI, {}).get(i, 0) != 0):
                 self.graph[EI][i] = 2
 
         self.gatewayCounter+=1
-        if(self.gatewayCounter == G):
+        print(self.graph, file=sys.stderr)
+        if(self.gatewayCounter == self.g):
             self.calculateDnagerForNodes()
 
 
@@ -121,8 +123,8 @@ for i in range(l):
     n1, n2 = [int(j) for j in input().split()]
     network.addLink(n1, n2)
 
-#for i in range(e):
-#    network.addGateWay(int(input()))
+for i in range(e):
+    network.addGateWay(int(input()))
 
 # game loop
 #while True:

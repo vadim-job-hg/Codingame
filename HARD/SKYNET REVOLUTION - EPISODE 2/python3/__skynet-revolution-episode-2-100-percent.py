@@ -4,7 +4,7 @@ import sys
 class Network:
     graph = {}
     gateways = {}
-    nodeDanger = None
+    nodeDanger = {}
     gatewayCounter = 0
     g = 0
     SI = 0

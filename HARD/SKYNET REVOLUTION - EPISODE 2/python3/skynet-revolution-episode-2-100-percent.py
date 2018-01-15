@@ -11,8 +11,8 @@ class Network:
     aMap = {}
     aGateways = {}
     aCritNodes = {}
-    aDistances = []
-    aPaths = []
+    aDistances = {}
+    aPaths = {}
     oDijk = None
 
     def __init__(self):
@@ -105,7 +105,7 @@ class Dijkstra():
                 self.distance[node] = 0
             else:
                 self.visited[node] = False
-                if self.map[self.startnode][node]:
+                if self.startnode in self.map and node in self.map[self.startnode]:
                     self.distance[node] =  self.map[self.startnode][node]
                 else:
                     self.distance[node] = self.infiniteDistance
@@ -113,7 +113,7 @@ class Dijkstra():
 
 
         tries = 0
-        while (False in self.visited and tries <= self.numberOfNodes):
+        while (False in self.visited.values() and tries <= self.numberOfNodes):
             self.bestPath = self.findBestPath(self.distance, self.visited.keys())
             if (to != None and self.bestPath == to):
                 break
@@ -137,52 +137,45 @@ class Dijkstra():
 
     def updateDistanceAndPrevious(self, obp):
         for node, aLinks in self.map.items():
-            if(self.map[obp][node] and (not(self.map[obp][node] == self.infiniteDistance) or (self.map[obp][node] == 0)) and ((self.distance[obp] + self.map[obp][node]) < self.distance[node])):
+            if(obp in self.map and node in self.map[obp] and (not(self.map[obp][node] == self.infiniteDistance) or (self.map[obp][node] == 0)) and ((self.distance[obp] + self.map[obp][node]) < self.distance[node])):
                 self.distance[node] = self.distance[obp] + self.map[obp][node]
                 self.previousNode[node] = obp
 
     def getDistance(self, to):
         return self.distance[to]
 
-'''
+    def getShortestPath(self, to = None):
+        ourShortestPath = {}
+        for node, aLinks in self.map.items():
+            if (to != None and to != node):
+                continue
 
-def getShortestPath(self, to = null) {
-ourShortestPath = array();
-foreach(self.map as node = > aLinks) {
-if (to != = null & & to != = node)
-{
-continue;
-}
-ourShortestPath[node] = array();
-endNode = null;
-currNode = node;
-ourShortestPath[node][] = node;
-while (endNode == = null | | endNode != self.startnode) {
-ourShortestPath[node][] = self.previousNode[currNode];
-endNode = self.previousNode[currNode];
-currNode = self.previousNode[currNode];
-}
-ourShortestPath[node] = array_reverse(ourShortestPath[node]);
-if (to == = null | | to == = node) {
-if (self.distance[node] >= self.infiniteDistance) {
-ourShortestPath[node] =[];
-continue;
-}
-if (to == = node) {
-break;
-}
-}
-}
+            ourShortestPath[node] = []
+            endNode = None
+            currNode = node
+            ourShortestPath[node].append(node)
 
-if (to == = null) {
-return ourShortestPath;
-}
-if (isset(ourShortestPath[to])) {
-return ourShortestPath[to];
-}
-return [];
-}
-'''
+            while (endNode == None or endNode != self.startnode):
+                ourShortestPath[node].append(self.previousNode[currNode])
+                endNode = self.previousNode[currNode]
+                currNode = self.previousNode[currNode]
+
+            ourShortestPath[node] = ourShortestPath[node][::-1]
+            if (to == None or to == node):
+                if (self.distance[node] >= self.infiniteDistance):
+                    ourShortestPath[node] = []
+                    continue
+
+                if (to == node):
+                    break
+
+        if (to == None):
+            return ourShortestPath
+
+        if (to in ourShortestPath):
+            return ourShortestPath[to]
+
+        return []
 
 oNetwork = Network()
 while True:

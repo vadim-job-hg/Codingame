@@ -1,9 +1,13 @@
 import sys
 import math
+
 DEBUG = True
+
+
 def debug(*args):
     if (DEBUG):
         print(args, file=sys.stderr)
+
 
 class Network:
     iNbNodes = 0
@@ -12,7 +16,7 @@ class Network:
     aGateways = {}
     aCritNodes = {}
     aDistances = {}
-    aPaths = {}
+    aPathes = {}
     oDijk = None
 
     def __init__(self):
@@ -69,7 +73,7 @@ class Network:
                 return True
         return False
 
-    def findDistancesAndPaths(self, si = None):
+    def findDistancesAndPaths(self, si=None):
         if (si is None):
             si = self.iSkynetNode
 
@@ -79,6 +83,28 @@ class Network:
             self.aDistances[iGw] = self.oDijk.getDistance(iGw)
             self.aPathes[iGw] = self.oDijk.getShortestPath(iGw)
 
+    def findCriticalPressureForGateways(self):
+        for iCriticalNode, criticalLevel in self.aCritNodes.items():
+            if (criticalLevel <= 1):
+                continue
+
+            self.oDijk.findShortestPath(self.iSkynetNode, iCriticalNode)
+            aPath = self.oDijk.getShortestPath(iCriticalNode)[1::-1]
+            aPath = aPath[1:]
+            while (len(aPath) > 0):
+                aPath = iAnalyzingNode = aPath[1:]
+                if (len(self.aCritNodes[iAnalyzingNode]) > 0):
+                    continue
+                criticalLevel -= 1
+
+            if (criticalLevel <= 0):
+                continue
+
+            for iGW, aChildren in self.aGateways.items():
+                if (iCriticalNode in aChildren):
+                    return self.cutLink(iCriticalNode, iGW)
+
+        return False
 
 
 class Dijkstra():
@@ -91,13 +117,14 @@ class Dijkstra():
     numberOfNodes = 0
     bestPath = 0
     matrixWidth = 0
+
     def __init__(self, ourMap, infiniteDistance):
         self.infiniteDistance = infiniteDistance
         self.map = ourMap
         self.numberOfNodes = len(ourMap)
         self.bestPath = 0
 
-    def findShortestPath(self, start, to = None):
+    def findShortestPath(self, start, to=None):
         self.startnode = start
         for node, aLinks in self.map.items():
             if node == self.startnode:
@@ -106,11 +133,10 @@ class Dijkstra():
             else:
                 self.visited[node] = False
                 if self.startnode in self.map and node in self.map[self.startnode]:
-                    self.distance[node] =  self.map[self.startnode][node]
+                    self.distance[node] = self.map[self.startnode][node]
                 else:
                     self.distance[node] = self.infiniteDistance
                 self.previousNode[node] = self.startnode
-
 
         tries = 0
         while (False in self.visited.values() and tries <= self.numberOfNodes):
@@ -120,9 +146,7 @@ class Dijkstra():
 
             self.updateDistanceAndPrevious(self.bestPath)
             self.visited[self.bestPath] = True
-            tries +=1
-
-
+            tries += 1
 
     def findBestPath(self, ourDistance, ourNodesLeft):
         bestPath = self.infiniteDistance
@@ -134,17 +158,18 @@ class Dijkstra():
 
         return bestNode
 
-
     def updateDistanceAndPrevious(self, obp):
         for node, aLinks in self.map.items():
-            if(obp in self.map and node in self.map[obp] and (not(self.map[obp][node] == self.infiniteDistance) or (self.map[obp][node] == 0)) and ((self.distance[obp] + self.map[obp][node]) < self.distance[node])):
+            if (obp in self.map and node in self.map[obp] and (
+                    not (self.map[obp][node] == self.infiniteDistance) or (self.map[obp][node] == 0)) and (
+                    (self.distance[obp] + self.map[obp][node]) < self.distance[node])):
                 self.distance[node] = self.distance[obp] + self.map[obp][node]
                 self.previousNode[node] = obp
 
     def getDistance(self, to):
         return self.distance[to]
 
-    def getShortestPath(self, to = None):
+    def getShortestPath(self, to=None):
         ourShortestPath = {}
         for node, aLinks in self.map.items():
             if (to != None and to != node):
@@ -176,6 +201,7 @@ class Dijkstra():
             return ourShortestPath[to]
 
         return []
+
 
 oNetwork = Network()
 while True:

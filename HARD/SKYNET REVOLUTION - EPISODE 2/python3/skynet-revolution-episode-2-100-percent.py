@@ -1,5 +1,6 @@
 import sys
 import math
+import operator
 
 DEBUG = True
 
@@ -105,6 +106,56 @@ class Network:
                     return self.cutLink(iCriticalNode, iGW)
 
         return False
+
+    def findPressureForAllGateways(self):
+        sorted(self.aDistances.items(), key=lambda x: x[1])
+        for iGW in self.aDistances.keys():
+            aPathToFarest = self.aPathes[iGW][1:-1]
+            for iNodeInWay in aPathToFarest:
+                if (empty(self.aCritNodes[iNodeInWay])):
+                    iWeakNode = self.hasWeakNode(iGW)
+                    if (False != iWeakNode):
+                        self.cutLink(iGW, iWeakNode)
+                        return True
+
+                    break
+
+                if (iNodeInWay in self.aCritNodes and self.aCritNodes[iNodeInWay] > 1):
+                    self.cutLink(iGW, iNodeInWay)
+                    return True
+
+        return False
+
+    def cutClosestLink(self):
+        sorted(self.aDistances.items(), key=lambda x: x[1])
+        #reset(this->aDistances);
+        iNearestNode = self.aDistances.keys()[0];
+        aShortestPath = self.aPathes[iNearestNode];
+        aLinkRemoved = aShortestPath[-2]
+        iNode1, iNode2 = aLinkRemoved
+        self.cutLink(iNode1, iNode2)
+
+    def cutLink(self, n1, n2):    
+        if n1 in self.aCritNodes:
+            self.aCritNodes[n1]-=1;
+        if n2 in self.aCritNodes[]:
+            self.aCritNodes[n2]-=1;
+
+        if (n1 in self.aMap and n1 in self.aMap[n1]):
+            del(self.aMap[n1][n1])
+        if (n1 in self.aMap and n2 in self.aMap[n1]):
+            del(self.aMap[n1][n2])
+        if (n2 in self.aMap and n1 in self.aMap[n2]):
+            del(self.aMap[n2][n1])
+        if (n2 in self.aMap and n2 in self.aMap[n2]):
+            del(self.aMap[n2][n2])
+        
+        if (isset(self.aGateways[n1][n2])) {del(self.aGateways[n1][n2]);};
+        if (isset(self.aGateways[n2][n1])) {del(self.aGateways[n2][n1]);};
+        
+        print('{} {}'.format(n1, n2))
+        return True
+    
 
 
 class Dijkstra():

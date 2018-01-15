@@ -113,16 +113,16 @@ class Dijkstra():
 
 
         tries = 0
-        while (in_array(false,self.visited, true) & & tries <= self.numberOfNodes) {
-        self.bestPath = self.findBestPath(self.distance, array_keys(self.visited, false, true));
-        if (to != = null & & self.bestPath == to) {
-        break;
-        }
-        self.updateDistanceAndPrevious(self.bestPath);
-        self.visited[self.bestPath] = true;
-        tries + +;
-        }
-        }
+        while (False in self.visited and tries <= self.numberOfNodes):
+            self.bestPath = self.findBestPath(self.distance, self.visited.keys())
+            if (to != None and self.bestPath == to):
+                break
+
+            self.updateDistanceAndPrevious(self.bestPath)
+            self.visited[self.bestPath] = True
+            tries +=1
+
+
 '''
     public
     function

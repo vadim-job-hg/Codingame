@@ -83,8 +83,8 @@ class Network:
 
 class Dijkstra():
     visited = {}
-    distance = []
-    previousNode = []
+    distance = {}
+    previousNode = {}
     startnode = None
     map = []
     infiniteDistance = 0

@@ -1,13 +1,9 @@
 import sys
 import math
-
 DEBUG = True
-
-
 def debug(*args):
     if (DEBUG):
         print(args, file=sys.stderr)
-
 
 class Network:
     iNbNodes = 0
@@ -74,16 +70,134 @@ class Network:
         return False
 
     def findDistancesAndPaths(self, si = None):
-        if (si is None) {
-            si = self.iSkynetNode;
-        }
-        $this->oDijk = new Dijkstra($this->aMap, $this->iNbNodes);
-        foreach (array_keys($this->aGateways) as $iGw) {
-            $this->oDijk->findShortestPath($si, $iGw);
-            $this->aDistances[$iGw] = $this->oDijk->getDistance($iGw);
-            $this->aPathes[$iGw] = $this->oDijk->getShortestPath($iGw);
-        }
+        if (si is None):
+            si = self.iSkynetNode
 
+        self.oDijk = Dijkstra(self.aMap, self.iNbNodes)
+        for iGw in self.aGateways.keys():
+            self.oDijk.findShortestPath(si, iGw)
+            self.aDistances[iGw] = self.oDijk.getDistance(iGw)
+            self.aPathes[iGw] = self.oDijk.getShortestPath(iGw)
+
+
+
+class Dijkstra():
+    visited = {}
+    distance = []
+    previousNode = []
+    startnode = None
+    map = []
+    infiniteDistance = 0
+    numberOfNodes = 0
+    bestPath = 0
+    matrixWidth = 0
+    def __init__(self, ourMap, infiniteDistance):
+        self.infiniteDistance = infiniteDistance
+        self.map = ourMap
+        self.numberOfNodes = len(ourMap)
+        self.bestPath = 0
+
+    def findShortestPath(self, start, to = None):
+        self.startnode = start
+        for node, aLinks in self.map.items():
+            if node == self.startnode:
+                self.visited[node] = True
+                self.distance[node] = 0
+            else:
+                self.visited[node] = False
+                if self.map[self.startnode][node]:
+                    self.distance[node] =  self.map[self.startnode][node]
+                else:
+                    self.distance[node] = self.infiniteDistance
+                self.previousNode[node] = self.startnode
+
+
+        tries = 0
+        while (in_array(false,self.visited, true) & & tries <= self.numberOfNodes) {
+        self.bestPath = self.findBestPath(self.distance, array_keys(self.visited, false, true));
+        if (to != = null & & self.bestPath == to) {
+        break;
+        }
+        self.updateDistanceAndPrevious(self.bestPath);
+        self.visited[self.bestPath] = true;
+        tries + +;
+        }
+        }
+'''
+    public
+    function
+    findBestPath(ourDistance, ourNodesLeft) {
+    bestPath = self.infiniteDistance;
+    bestNode = null;
+    foreach(ourNodesLeft as nodeLeft) {
+    if (ourDistance[nodeLeft] < bestPath)
+    {
+    bestPath = ourDistance[nodeLeft];
+    bestNode = nodeLeft;
+
+}
+}
+return bestNode;
+}
+public
+function
+updateDistanceAndPrevious(obp) {
+foreach(self.map as node = > aLinks) {
+if (
+       (isset(self.map[obp][node])) & &
+   (!(self.map[obp][node] == self.infiniteDistance) | | (self.map[obp][node] == 0)) & &
+((self.distance[obp] + self.map[obp][node]) < self.distance[node])
+) {
+self.distance[node] = self.distance[obp] + self.map[obp][node];
+self.previousNode[node] = obp;
+}
+}
+}
+public
+function
+getDistance(to) {
+return self.distance[to];
+}
+
+public
+function
+getShortestPath(to = null) {
+ourShortestPath = array();
+foreach(self.map as node = > aLinks) {
+if (to != = null & & to != = node)
+{
+continue;
+}
+ourShortestPath[node] = array();
+endNode = null;
+currNode = node;
+ourShortestPath[node][] = node;
+while (endNode == = null | | endNode != self.startnode) {
+ourShortestPath[node][] = self.previousNode[currNode];
+endNode = self.previousNode[currNode];
+currNode = self.previousNode[currNode];
+}
+ourShortestPath[node] = array_reverse(ourShortestPath[node]);
+if (to == = null | | to == = node) {
+if (self.distance[node] >= self.infiniteDistance) {
+ourShortestPath[node] =[];
+continue;
+}
+if (to == = node) {
+break;
+}
+}
+}
+
+if (to == = null) {
+return ourShortestPath;
+}
+if (isset(ourShortestPath[to])) {
+return ourShortestPath[to];
+}
+return [];
+}
+'''
 
 
 

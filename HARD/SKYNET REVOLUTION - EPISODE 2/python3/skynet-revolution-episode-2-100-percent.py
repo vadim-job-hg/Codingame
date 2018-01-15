@@ -123,25 +123,19 @@ class Dijkstra():
             tries +=1
 
 
-'''
-    public
-    function
-    findBestPath(ourDistance, ourNodesLeft) {
-    bestPath = self.infiniteDistance;
-    bestNode = null;
-    foreach(ourNodesLeft as nodeLeft) {
-    if (ourDistance[nodeLeft] < bestPath)
-    {
-    bestPath = ourDistance[nodeLeft];
-    bestNode = nodeLeft;
 
-}
-}
-return bestNode;
-}
-public
-function
-updateDistanceAndPrevious(obp) {
+    def findBestPath(self, ourDistance, ourNodesLeft):
+        bestPath = self.infiniteDistance
+        bestNode = None
+        for nodeLeft in ourNodesLeft:
+            if ourDistance[nodeLeft] < bestPath:
+                bestPath = ourDistance[nodeLeft]
+                bestNode = nodeLeft
+
+        return bestNode
+
+    '''
+def updateDistanceAndPrevious(self, obp) {
 foreach(self.map as node = > aLinks) {
 if (
        (isset(self.map[obp][node])) & &
@@ -153,15 +147,11 @@ self.previousNode[node] = obp;
 }
 }
 }
-public
-function
-getDistance(to) {
+def getDistance(self, to) {
 return self.distance[to];
 }
 
-public
-function
-getShortestPath(to = null) {
+def getShortestPath(self, to = null) {
 ourShortestPath = array();
 foreach(self.map as node = > aLinks) {
 if (to != = null & & to != = node)
@@ -198,8 +188,6 @@ return ourShortestPath[to];
 return [];
 }
 '''
-
-
 
 oNetwork = Network()
 while True:

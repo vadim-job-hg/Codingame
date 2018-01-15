@@ -134,22 +134,17 @@ class Dijkstra():
 
         return bestNode
 
-    '''
-def updateDistanceAndPrevious(self, obp) {
-foreach(self.map as node = > aLinks) {
-if (
-       (isset(self.map[obp][node])) & &
-   (!(self.map[obp][node] == self.infiniteDistance) | | (self.map[obp][node] == 0)) & &
-((self.distance[obp] + self.map[obp][node]) < self.distance[node])
-) {
-self.distance[node] = self.distance[obp] + self.map[obp][node];
-self.previousNode[node] = obp;
-}
-}
-}
-def getDistance(self, to) {
-return self.distance[to];
-}
+
+    def updateDistanceAndPrevious(self, obp):
+        for node, aLinks in self.map.items():
+            if(self.map[obp][node] and (not(self.map[obp][node] == self.infiniteDistance) or (self.map[obp][node] == 0)) and ((self.distance[obp] + self.map[obp][node]) < self.distance[node])):
+                self.distance[node] = self.distance[obp] + self.map[obp][node]
+                self.previousNode[node] = obp
+
+    def getDistance(self, to):
+        return self.distance[to]
+
+'''
 
 def getShortestPath(self, to = null) {
 ourShortestPath = array();

@@ -2,20 +2,23 @@ import sys
 import math
 
 DEBUG = True
+
+
 def debug(*args):
     if (DEBUG):
         print(args, file=sys.stderr)
+
 
 class Network:
     iNbNodes = 0
     iSkynetNode = None
     aMap = {}
-    aGateways = []
-    aCritNodes = []
+    aGateways = {}
+    aCritNodes = {}
     aDistances = []
     aPaths = []
     oDijk = None
-    
+
     def __init__(self):
         self.iNbNodes, l, e = [int(i) for i in input().split()]
         self._defineMap(l)
@@ -33,13 +36,15 @@ class Network:
     def _defineGateways(self, nbExit):
         for i in range(nbExit):
             ei = int(input())  # the index of a gateway node
-            gat.append(ei)
             self.aGateways[ei] = self.aMap[ei]
-            del(self.aGateways[ei][ei])
-            del(self.aMap[ei])
-            self.aMap[ei][ei] = 0
+            del (self.aGateways[ei][ei])
+            del (self.aMap[ei])
+            self.aMap[ei] = {ei: 0}
             for iGWChildren in self.aGateways[ei].keys():
-                self.aCritNodes.setdefault(iGWChildren, 0) +=1
+                if self.aCritNodes.get(iGWChildren):
+                    self.aCritNodes[iGWChildren] += 1
+                else:
+                    self.aCritNodes[iGWChildren] = 0
 
     def runRound(self):
         self.iSkynetNode = int(input())  # The index of the node on which the Skynet agent is positioned this turn
@@ -53,17 +58,35 @@ class Network:
             debug('findCriticalPressureForGateways')
             return None
 
-
         if (self.findPressureForAllGateways()):
             debug('findPressureForAllGateways')
             return None
 
-
-        debug('cutClosestLink');
+        debug('cutClosestLink')
         self.cutClosestLink()
 
+    def isUnderPressure(self):
+        for iGWNode, aChildrenPath in self.aGateways.items():
+            aChildren = aChildrenPath.keys()
+            if self.iSkynetNode in aChildren:
+                self.cutLink(iGWNode, self.iSkynetNode)
+                return True
+        return False
+
+    def findDistancesAndPaths(self, si = None):
+        if (si is None) {
+            si = self.iSkynetNode;
+        }
+        $this->oDijk = new Dijkstra($this->aMap, $this->iNbNodes);
+        foreach (array_keys($this->aGateways) as $iGw) {
+            $this->oDijk->findShortestPath($si, $iGw);
+            $this->aDistances[$iGw] = $this->oDijk->getDistance($iGw);
+            $this->aPathes[$iGw] = $this->oDijk->getShortestPath($iGw);
+        }
 
 
-    oNetwork = Network()
-    while True:
-        oNetwork.runRound()
+
+
+oNetwork = Network()
+while True:
+    oNetwork.runRound()

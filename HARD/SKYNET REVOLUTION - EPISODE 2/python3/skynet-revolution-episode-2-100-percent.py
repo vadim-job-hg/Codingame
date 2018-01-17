@@ -138,7 +138,7 @@ class Network:
     def cutLink(self, n1, n2):    
         if n1 in self.aCritNodes:
             self.aCritNodes[n1]-=1;
-        if n2 in self.aCritNodes[]:
+        if n2 in self.aCritNodes:
             self.aCritNodes[n2]-=1;
 
         if (n1 in self.aMap and n1 in self.aMap[n1]):
@@ -149,9 +149,10 @@ class Network:
             del(self.aMap[n2][n1])
         if (n2 in self.aMap and n2 in self.aMap[n2]):
             del(self.aMap[n2][n2])
-        
-        if (isset(self.aGateways[n1][n2])) {del(self.aGateways[n1][n2]);};
-        if (isset(self.aGateways[n2][n1])) {del(self.aGateways[n2][n1]);};
+        if (n1 in self.aGateways and n2 in self.aGateways[n1]):
+            del(self.aGateways[n1][n2])
+        if (n2 in self.aGateways and n1 in self.aGateways[n2]):
+            del(self.aGateways[n2][n1])
         
         print('{} {}'.format(n1, n2))
         return True

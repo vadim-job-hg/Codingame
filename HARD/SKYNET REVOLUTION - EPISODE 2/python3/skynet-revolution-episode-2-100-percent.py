@@ -25,6 +25,7 @@ class Network:
         self._defineMap(l)
         self._defineGateways(e)
         # debug('map', self.aMap)
+        # debug('aCritNodes', self.aCritNodes);
 
     def _defineMap(self, nbLinks):
         for i in range(nbLinks):
@@ -43,10 +44,10 @@ class Network:
             del (self.aMap[ei])
             self.aMap[ei] = {ei: 0}
             for iGWChildren in self.aGateways[ei].keys():
-                if self.aCritNodes.get(iGWChildren):
+                if self.aCritNodes.get(iGWChildren, False):
                     self.aCritNodes[iGWChildren] += 1
                 else:
-                    self.aCritNodes[iGWChildren] = 0
+                    self.aCritNodes[iGWChildren] = 1
 
     def runRound(self):
         self.iSkynetNode = int(input())  # The index of the node on which the Skynet agent is positioned this turn
@@ -54,7 +55,7 @@ class Network:
             debug('isUnderPressure')
             return None
 
-        debug('findDistancesAndPaths');
+        debug('findDistancesAndPaths')
         self.findDistancesAndPaths()
 
         if (self.findCriticalPressureForGateways()):
@@ -87,7 +88,7 @@ class Network:
             self.aPathes[iGw] = self.oDijk.getShortestPath(iGw)
 
     def findCriticalPressureForGateways(self):
-        debug(self.aCritNodes.items());
+        #debug(self.aCritNodes.items())
         for iCriticalNode, criticalLevel in self.aCritNodes.items():
             if (criticalLevel <= 1):
                 continue
@@ -96,8 +97,11 @@ class Network:
             aPath = self.oDijk.getShortestPath(iCriticalNode)[1::-1]
             aPath = aPath[1:]
             while (len(aPath) > 0):
-                aPath = iAnalyzingNode = aPath[1:]
-                if (len(self.aCritNodes[iAnalyzingNode]) > 0):
+                iAnalyzingNode = aPath[0]
+                aPath = aPath[1:]
+                #debug(self.aCritNodes)
+                #debug(iAnalyzingNode)
+                if (iAnalyzingNode not in self.aCritNodes):
                     continue
                 criticalLevel -= 1
 
@@ -115,7 +119,7 @@ class Network:
         for iGW in self.aDistances.keys():
             aPathToFarest = self.aPathes[iGW][1:-1]
             for iNodeInWay in aPathToFarest:
-                if (empty(self.aCritNodes[iNodeInWay])):
+                if (not(self.aCritNodes[iNodeInWay])):
                     iWeakNode = self.hasWeakNode(iGW)
                     if (False != iWeakNode):
                         self.cutLink(iGW, iWeakNode)
@@ -133,18 +137,19 @@ class Network:
         sorted(self.aDistances.items(), key=lambda x: x[1])
         # reset(this->aDistances);
         iNearestNode = list(self.aDistances.keys())[0]
-        debug(iNearestNode)
+        debug('iNearestNode',iNearestNode)
         aShortestPath = self.aPathes[iNearestNode]
-        debug(self.aPathes)
+        debug('aPathes',self.aPathes)
         aLinkRemoved = aShortestPath[:-2]
+        debug('aShortestPath',aShortestPath)
         iNode1, iNode2 = aLinkRemoved
         self.cutLink(iNode1, iNode2)
 
     def cutLink(self, n1, n2):
         if n1 in self.aCritNodes:
-            self.aCritNodes[n1] -= 1;
+            self.aCritNodes[n1] -= 1
         if n2 in self.aCritNodes:
-            self.aCritNodes[n2] -= 1;
+            self.aCritNodes[n2] -= 1
 
         if (n1 in self.aMap and n1 in self.aMap[n1]):
             del (self.aMap[n1][n1])

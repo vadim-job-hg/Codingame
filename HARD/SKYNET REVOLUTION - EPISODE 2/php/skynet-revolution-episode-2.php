@@ -22,6 +22,7 @@ class Network
         fscanf(STDIN, "%d %d %d", $this->iNbNodes, $L, $E);
         $this->_defineMap($L);
         $this->_defineGateways($E);
+        //debug('aCritNodes', $this->aCritNodes);
         //debug('map', $this->aMap);
     }
 
@@ -127,7 +128,7 @@ class Network
 
     public function findCriticalPressureForGateways()
     {
-        debug($this->aCritNodes);
+        //debug($this->aCritNodes);
         foreach ($this->aCritNodes as $iCriticalNode => $criticalLevel) {
             if ($criticalLevel <= 1) {
                 //This case was previously done by Network::isUnderPressure() so ignore it
@@ -138,6 +139,7 @@ class Network
             array_shift($aPath); //Remove first element because it's the node itself.
             while (!empty($aPath)) {
                 $iAnalyzingNode = array_shift($aPath);
+                //debug($iAnalyzingNode);
                 if (!empty($this->aCritNodes[$iAnalyzingNode])) {
                     continue;
                 }
@@ -224,8 +226,11 @@ class Network
         asort($this->aDistances);
         reset($this->aDistances);
         $iNearestNode = key($this->aDistances);
+        debug('$iNearestNode', $iNearestNode);
         $aShortestPath = $this->aPathes[$iNearestNode];
+        debug('aPathes', $this->aPathes);
         $aLinkRemoved = array_slice($aShortestPath, -2);
+        debug('$aLinkRemoved', $aLinkRemoved);
         list($iNode1, $iNode2) = $aLinkRemoved;
         $this->cutLink($iNode1, $iNode2);
     }

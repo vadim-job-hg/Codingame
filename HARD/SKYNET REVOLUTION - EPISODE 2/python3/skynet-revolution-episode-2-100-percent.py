@@ -82,13 +82,16 @@ class Network:
             si = self.iSkynetNode
 
         self.oDijk = Dijkstra(self.aMap, self.iNbNodes)
+        # debug('aGateways', self.aGateways)
         for iGw in self.aGateways.keys():
             self.oDijk.findShortestPath(si, iGw)
             self.aDistances[iGw] = self.oDijk.getDistance(iGw)
             self.aPathes[iGw] = self.oDijk.getShortestPath(iGw)
 
+        debug('aDistances', self.aDistances)
+
     def findCriticalPressureForGateways(self):
-        #debug(self.aCritNodes.items())
+        # debug(self.aCritNodes.items())
         for iCriticalNode, criticalLevel in self.aCritNodes.items():
             if (criticalLevel <= 1):
                 continue
@@ -99,8 +102,8 @@ class Network:
             while (len(aPath) > 0):
                 iAnalyzingNode = aPath[0]
                 aPath = aPath[1:]
-                #debug(self.aCritNodes)
-                #debug(iAnalyzingNode)
+                # debug(self.aCritNodes)
+                # debug(iAnalyzingNode)
                 if (iAnalyzingNode not in self.aCritNodes):
                     continue
                 criticalLevel -= 1
@@ -119,12 +122,11 @@ class Network:
         for iGW in self.aDistances.keys():
             aPathToFarest = self.aPathes[iGW][1:-1]
             for iNodeInWay in aPathToFarest:
-                if (not(self.aCritNodes[iNodeInWay])):
+                if (not (self.aCritNodes[iNodeInWay])):
                     iWeakNode = self.hasWeakNode(iGW)
                     if (False != iWeakNode):
                         self.cutLink(iGW, iWeakNode)
                         return True
-
                     break
 
                 if (iNodeInWay in self.aCritNodes and self.aCritNodes[iNodeInWay] > 1):
@@ -137,11 +139,11 @@ class Network:
         sorted(self.aDistances.items(), key=lambda x: x[1])
         # reset(this->aDistances);
         iNearestNode = list(self.aDistances.keys())[0]
-        debug('iNearestNode',iNearestNode)
+        debug('iNearestNode', iNearestNode)
         aShortestPath = self.aPathes[iNearestNode]
-        debug('aPathes',self.aPathes)
+        debug('aPathes', self.aPathes)
         aLinkRemoved = aShortestPath[:-2]
-        debug('aShortestPath',aShortestPath)
+        debug('aShortestPath', aShortestPath)
         iNode1, iNode2 = aLinkRemoved
         self.cutLink(iNode1, iNode2)
 

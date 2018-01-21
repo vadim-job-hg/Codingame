@@ -119,11 +119,13 @@ class Network
             $si = $this->iSkynetNode;
         }
         $this->oDijk = new Dijkstra($this->aMap, $this->iNbNodes);
+        //debug('aGateways', $this->aGateways);
         foreach (array_keys($this->aGateways) as $iGw) {
             $this->oDijk->findShortestPath($si, $iGw);
             $this->aDistances[$iGw] = $this->oDijk->getDistance($iGw);
             $this->aPathes[$iGw] = $this->oDijk->getShortestPath($iGw);
         }
+        debug('aDistances', $this->aDistances);
     }
 
     public function findCriticalPressureForGateways()

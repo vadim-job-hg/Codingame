@@ -24,6 +24,7 @@ class Network:
         self.iNbNodes, l, e = [int(i) for i in input().split()]
         self._defineMap(l)
         self._defineGateways(e)
+        # debug('map', self.aMap)
 
     def _defineMap(self, nbLinks):
         for i in range(nbLinks):
@@ -53,6 +54,7 @@ class Network:
             debug('isUnderPressure')
             return None
 
+        debug('findDistancesAndPaths');
         self.findDistancesAndPaths()
 
         if (self.findCriticalPressureForGateways()):
@@ -85,6 +87,7 @@ class Network:
             self.aPathes[iGw] = self.oDijk.getShortestPath(iGw)
 
     def findCriticalPressureForGateways(self):
+        debug(self.aCritNodes.items());
         for iCriticalNode, criticalLevel in self.aCritNodes.items():
             if (criticalLevel <= 1):
                 continue
@@ -128,35 +131,36 @@ class Network:
 
     def cutClosestLink(self):
         sorted(self.aDistances.items(), key=lambda x: x[1])
-        #reset(this->aDistances);
-        iNearestNode = self.aDistances.keys()[0];
-        aShortestPath = self.aPathes[iNearestNode];
-        aLinkRemoved = aShortestPath[-2]
+        # reset(this->aDistances);
+        iNearestNode = list(self.aDistances.keys())[0]
+        debug(iNearestNode)
+        aShortestPath = self.aPathes[iNearestNode]
+        debug(self.aPathes)
+        aLinkRemoved = aShortestPath[:-2]
         iNode1, iNode2 = aLinkRemoved
         self.cutLink(iNode1, iNode2)
 
-    def cutLink(self, n1, n2):    
+    def cutLink(self, n1, n2):
         if n1 in self.aCritNodes:
-            self.aCritNodes[n1]-=1;
+            self.aCritNodes[n1] -= 1;
         if n2 in self.aCritNodes:
-            self.aCritNodes[n2]-=1;
+            self.aCritNodes[n2] -= 1;
 
         if (n1 in self.aMap and n1 in self.aMap[n1]):
-            del(self.aMap[n1][n1])
+            del (self.aMap[n1][n1])
         if (n1 in self.aMap and n2 in self.aMap[n1]):
-            del(self.aMap[n1][n2])
+            del (self.aMap[n1][n2])
         if (n2 in self.aMap and n1 in self.aMap[n2]):
-            del(self.aMap[n2][n1])
+            del (self.aMap[n2][n1])
         if (n2 in self.aMap and n2 in self.aMap[n2]):
-            del(self.aMap[n2][n2])
+            del (self.aMap[n2][n2])
         if (n1 in self.aGateways and n2 in self.aGateways[n1]):
-            del(self.aGateways[n1][n2])
+            del (self.aGateways[n1][n2])
         if (n2 in self.aGateways and n1 in self.aGateways[n2]):
-            del(self.aGateways[n2][n1])
-        
+            del (self.aGateways[n2][n1])
+
         print('{} {}'.format(n1, n2))
         return True
-    
 
 
 class Dijkstra():

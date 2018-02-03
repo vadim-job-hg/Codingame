@@ -86,6 +86,7 @@ class Network:
         for iGw in self.aGateways.keys():
             self.oDijk.findShortestPath(si, iGw)
             self.aDistances[iGw] = self.oDijk.getDistance(iGw)
+            debug('aDistances[iGw]', iGw, self.aDistances[iGw])
             self.aPathes[iGw] = self.oDijk.getShortestPath(iGw)
 
         debug('aDistances', self.aDistances)

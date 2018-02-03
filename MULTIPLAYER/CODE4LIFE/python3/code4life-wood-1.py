@@ -121,17 +121,18 @@ class Game:
         elif current_player.target == 'DIAGNOSIS':
             if len(player_samples) > 0:
                 for player_sample in player_samples:
-                    if player_sample.get_molecules_count() < 0:
+                    if player_sample.get_molecules_count() < 0 or player_sample.get_molecules_count() > 10:
                         print("CONNECT {}".format(player_sample.sample_id))
                         break
                 else:
-                    print("GOTO LABORATORY")
+                    print("GOTO MOLECULES")
             else:
                 print("GOTO SAMPLES")
 
         elif current_player.target == 'MOLECULES':
             if len(player_samples) > 0:
                 molecules_nedded = player_samples[0].get_cost()
+                debug(player_samples[0].get_cost())
                 molecules_have = current_player.get_molecules()
                 for key, molecule in molecules_nedded.items():
                     if molecule > molecules_have[key]:

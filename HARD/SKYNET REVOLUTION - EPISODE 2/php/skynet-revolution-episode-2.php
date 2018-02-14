@@ -1,4 +1,5 @@
 <?php
+//todo: cpyrights
 define('DEBUG', true);
 function debug() {if (!DEBUG) return; foreach (func_get_args() as $sArgDebug) error_log(var_export($sArgDebug, true));}
 class Network

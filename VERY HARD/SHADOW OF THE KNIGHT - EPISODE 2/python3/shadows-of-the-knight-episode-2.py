@@ -1,5 +1,4 @@
 # https://www.codingame.com/ide/puzzle/shadows-of-the-knight-episode-2
-# https://www.codingame.com/ide/puzzle/shadows-of-the-knight-episode-1
 import sys
 import math
 

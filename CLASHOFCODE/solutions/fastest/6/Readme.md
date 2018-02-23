@@ -1,22 +1,21 @@
+The program:
+Your program must print the sum of the square of the numbers given as input.
 
-A contribution by JimmyCarlos
-Approved by InstouT94 , MasakiKyosuke and aCat
- Goal
-You will be given a string of digits to add up. Start adding them up, but if at any time one of the digits is 0, reset the sum back to 0.
+INPUT:
+Line 1: An integer N for the amount of numbers to use.
+Line 2: A line containing N space-separated integers Xi.
+
+OUTPUT:
+The sum of the squares of the Xi numbers.
+
+CONSTRAINTS:
+0 < N < 100
+-1000 < Xi < 1000
+
+EXAMPLE:
 Input
-Line 1: An integer N telling the number of digits in the string.
-Line 2: A string S of N digits.
+3
+1 2 3
 Output
-The sum, given as an integer.
-Constraints
-1 ≤ N ≤ 1000
-Example
-Input
-
-5
-12345
-
-Output
-
-15
-
+14
+ 

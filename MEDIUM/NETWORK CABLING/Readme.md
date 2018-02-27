@@ -6,7 +6,7 @@ For the implementation of the works, the operator has technical constraints wher
 A main cable will cross through the park from the West to the East (from the position x of the most westerly building to the position x of the most easterly building).
 For each building, a dedicated cable will connect from the building to the main cable by a minimal path (North or South), as shown in Fig. 1.
 
-![Fig. 1](img/fig1.png 'Fig. 1')
+![Fig. 1](img/img/fig1.png 'Fig. 1')
 
 _In this example, the green line represents the cables._
 
@@ -44,7 +44,7 @@ The buildings with the same position x should not in any case share the same ded
 
         4
 
-![Example #1](img/example.png 'Example #1')
+![Example #1](img/img/example.png 'Example #1')
 
 #### Example #2
 
@@ -59,7 +59,7 @@ The buildings with the same position x should not in any case share the same ded
 
         4
 
-![Example #2](img/example2.png 'Example #2')
+![Example #2](img/img/example2.png 'Example #2')
 
 ## Conditions
 

@@ -4,7 +4,7 @@ The city of Montpellier has equipped its streets with defibrillators to help sav
 
 Based on the data, you decide to write a program that will allow users to find the defibrillator nearest to their location using their mobile phone.
 
-![heartbeat](../../descriptions/img/heart.gif 'heartbeat')
+![heartbeat](img/heart.gif 'heartbeat')
 
 The input data you require for your program is provided in _ASCII_ format.
 This data is comprised of lines, each of which represents a defibrillator. Each defibrillator is represented by the following fields:

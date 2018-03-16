@@ -161,60 +161,60 @@ class Grid:
         def max_priority(self, actions):
             return max(self.PRIORITY.get((x.x % 3, x.y % 3), 1) for x in actions)
 
-    class TTT:
-        def __init__(self):
-            self.valid_actions = set()
-            self.valid_base = set()
-            self.grids = {
-                (0, 0): Grid(0, 0), (0, 1): Grid(0, 1), (0, 2): Grid(0, 2),
-                (1, 0): Grid(1, 0), (1, 1): Grid(1, 1), (1, 2): Grid(1, 2),
-                (2, 0): Grid(2, 0), (2, 1): Grid(2, 1), (2, 2): Grid(2, 2),
-                'base': Grid()
-            }
-            self._answer = Coors(1, 1)
+class TTT:
+    def __init__(self):
+        self.valid_actions = set()
+        self.valid_base = set()
+        self.grids = {
+            (0, 0): Grid(0, 0), (0, 1): Grid(0, 1), (0, 2): Grid(0, 2),
+            (1, 0): Grid(1, 0), (1, 1): Grid(1, 1), (1, 2): Grid(1, 2),
+            (2, 0): Grid(2, 0), (2, 1): Grid(2, 1), (2, 2): Grid(2, 2),
+            'base': Grid()
+        }
+        self._answer = Coors(1, 1)
 
-        def get_data(self):
-            opponent_row, opponent_col = [int(i) for i in input().split()]
-            self._save_enemy_answer(Coors(opponent_row, opponent_col))
-            valid_action_count = int(input())
-            self.valid_actions.clear()
-            self.valid_base.clear()
-            for i in range(valid_action_count):
-                row, col = [int(j) for j in input().split()]
-                # print(row, col, file=sys.stderr)
-                self.valid_actions.add(Coors(row, col))
-                self.valid_base.add(Coors(int(row / 3), int(col / 3)))
-                # print(row, col, file=sys.stderr)
+    def get_data(self):
+        opponent_row, opponent_col = [int(i) for i in input().split()]
+        self._save_enemy_answer(Coors(opponent_row, opponent_col))
+        valid_action_count = int(input())
+        self.valid_actions.clear()
+        self.valid_base.clear()
+        for i in range(valid_action_count):
+            row, col = [int(j) for j in input().split()]
+            # print(row, col, file=sys.stderr)
+            self.valid_actions.add(Coors(row, col))
+            self.valid_base.add(Coors(int(row / 3), int(col / 3)))
+            # print(row, col, file=sys.stderr)
 
-        def action(self):
-            self._find_best()
-            self.answer()
+    def action(self):
+        self._find_best()
+        self.answer()
 
-        def _find_best(self):
-            base_best = self.grids['base'].best_coor(self.valid_base)
-            # print('base_best', base_best, file=sys.stderr)
-            best_in_grid = self.grids[(base_best.x, base_best.y)].best_coor(self.valid_actions)
-            self._answer = Coors(best_in_grid.x, best_in_grid.y)
+    def _find_best(self):
+        base_best = self.grids['base'].best_coor(self.valid_base)
+        # print('base_best', base_best, file=sys.stderr)
+        best_in_grid = self.grids[(base_best.x, base_best.y)].best_coor(self.valid_actions)
+        self._answer = Coors(best_in_grid.x, best_in_grid.y)
 
-        def answer(self):
-            self._save_my_answer()
-            print("{} {}".format(self._answer.x, self._answer.y))
+    def answer(self):
+        self._save_my_answer()
+        print("{} {}".format(self._answer.x, self._answer.y))
 
-        def _save_my_answer(self):
-            self.grids[self._answer.base_coors()].save_my_answer(self._answer)
-            if self.grids[self._answer.base_coors()].finished():
-                self.grids['base'].save_enemy_answer(self._answer.base_coors_class())
+    def _save_my_answer(self):
+        self.grids[self._answer.base_coors()].save_my_answer(self._answer)
+        if self.grids[self._answer.base_coors()].finished():
+            self.grids['base'].save_enemy_answer(self._answer.base_coors_class())
 
-        def _save_enemy_answer(self, enemy_answer):
-            if (enemy_answer.x != -1 and enemy_answer.y != -1):
-                self.grids[enemy_answer.base_coors()].save_enemy_answer(enemy_answer)
-                if self.grids[enemy_answer.base_coors()].finished():
-                    self.grids['base'].save_enemy_answer(enemy_answer.base_coors_class())
+    def _save_enemy_answer(self, enemy_answer):
+        if (enemy_answer.x != -1 and enemy_answer.y != -1):
+            self.grids[enemy_answer.base_coors()].save_enemy_answer(enemy_answer)
+            if self.grids[enemy_answer.base_coors()].finished():
+                self.grids['base'].save_enemy_answer(enemy_answer.base_coors_class())
 
-    # game loop
-    tic_tac_toe = TTT()
-    while True:
-        tic_tac_toe.get_data()
-        tic_tac_toe.action()
-        # Write an action using print
-        # To debug: print("Debug messages...", file=sys.stderr)
+# game loop
+tic_tac_toe = TTT()
+while True:
+    tic_tac_toe.get_data()
+    tic_tac_toe.action()
+    # Write an action using print
+    # To debug: print("Debug messages...", file=sys.stderr)

@@ -4,6 +4,10 @@ import math
 
 # Auto-generated code below aims at helping you parse
 # the standard input according to the problem statement.
+class Priority:
+    pass
+
+
 class Coors:
     def __init__(self, x, y):
         self.x, self.y = x, y
@@ -39,22 +43,35 @@ class Grid:
         [Coors(0, 0), Coors(1, 1), Coors(2, 2)],
         [Coors(0, 2), Coors(1, 1), Coors(2, 0)],
     ]
-    PRIORITY = {  # dinamic
-        (1, 1): 3,
+    BASE_PRIORITY = {  # dinamic
         (0, 2): 2,
         (2, 2): 2,
         (2, 0): 2,
         (0, 0): 2,
+        (1, 1): 3,
+        # other 1
+    }
+    _priority = {  # dinamic
+        (0, 2): 2,
+        (2, 0): 2,
+        (2, 2): 2,
+        (0, 0): 2,
+        (1, 1): 3,
         # other 1
     }
 
-    def __init__(self, bx=0, by=0):
+    def __init__(self, bx=0, by=0, base=False):
         self.m_grids = []  # my
         self.e_grids = []  # enemy
         self.bx, self.by = bx, by
         self.m_priority_to_finish = {}
         self.e_priority_to_finish = {}
+        self.base = base
         self.is_finished = False
+        if base:
+            self.priority = self.BASE_PRIORITY
+        else:
+            self.priority = self._priority
 
     def _refresh(self, valid_actions):
         print('self.m_grids', self.m_grids, file=sys.stderr)
@@ -156,10 +173,10 @@ class Grid:
         def priority_filter(self, actions):
             max_priority = self.max_priority(actions)
             return set(x for x in actions if
-                       self.PRIORITY.get((x.x % 3, x.y % 3), 1) == max_priority)  # todo: coors with method
+                       self.priority.get((x.x % 3, x.y % 3), 1) == max_priority)  # todo: coors with method
 
         def max_priority(self, actions):
-            return max(self.PRIORITY.get((x.x % 3, x.y % 3), 1) for x in actions)
+            return max(self.priority.get((x.x % 3, x.y % 3), 1) for x in actions)
 
 class TTT:
     def __init__(self):
@@ -169,7 +186,7 @@ class TTT:
             (0, 0): Grid(0, 0), (0, 1): Grid(0, 1), (0, 2): Grid(0, 2),
             (1, 0): Grid(1, 0), (1, 1): Grid(1, 1), (1, 2): Grid(1, 2),
             (2, 0): Grid(2, 0), (2, 1): Grid(2, 1), (2, 2): Grid(2, 2),
-            'base': Grid()
+            'base': Grid(0, 0, True)
         }
         self._answer = Coors(1, 1)
 
@@ -185,6 +202,13 @@ class TTT:
             self.valid_actions.add(Coors(row, col))
             self.valid_base.add(Coors(int(row / 3), int(col / 3)))
             # print(row, col, file=sys.stderr)
+        self._refresh_priority()
+
+    def _refresh_priority(self):
+        for key, value in self.grids.items():
+            if (key != 'base'):
+                Grid._priority[key] = max(len(value.m_grids), len(value.e_grids),
+                                          999 if value.is_finished else 0) * -1
 
     def action(self):
         self._find_best()

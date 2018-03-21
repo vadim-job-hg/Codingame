@@ -108,75 +108,75 @@ class Grid:
         print('self.m_priority_to_finish', self.m_priority_to_finish, file=sys.stderr)
         # self.m_priority_to_finish
 
-        def save_my_answer(self, answer):
-            self.m_grids.append(answer.local)
+    def save_my_answer(self, answer):
+        self.m_grids.append(answer.local)
 
-        def save_enemy_answer(self, answer):
-            self.e_grids.append(answer.local)
+    def save_enemy_answer(self, answer):
+        self.e_grids.append(answer.local)
 
-        def finished(self):
-            if (not (self.is_finished)):
-                for winning in self.WINNING_COORS:
-                    cur_value = 0  # todo submethod
-                    for my in self.m_grids:
-                        if my.local in winning:
-                            print('{} in {}'.format(my.local, winning), file=sys.stderr)
-                            cur_value += 1
+    def finished(self):
+        if (not (self.is_finished)):
+            for winning in self.WINNING_COORS:
+                cur_value = 0  # todo submethod
+                for my in self.m_grids:
+                    if my.local in winning:
+                        print('{} in {}'.format(my.local, winning), file=sys.stderr)
+                        cur_value += 1
 
-                    if (cur_value == 3):
-                        self.is_finished = True
-                        break
+                if (cur_value == 3):
+                    self.is_finished = True
+                    break
 
-                    cur_value = 0  # todo submethod
-                    for en in self.e_grids:
-                        if en.local in winning:
-                            print('{} in {}'.format(en.local, winning), file=sys.stderr)
-                            cur_value += 1
+                cur_value = 0  # todo submethod
+                for en in self.e_grids:
+                    if en.local in winning:
+                        print('{} in {}'.format(en.local, winning), file=sys.stderr)
+                        cur_value += 1
 
-                    if (cur_value == 3):
-                        self.is_finished = True
-                        break
+                if (cur_value == 3):
+                    self.is_finished = True
+                    break
 
-            return self.is_finished
+        return self.is_finished
 
-        def best_coor(self, valid_actions):
-            this_grid_actions = self.filter_for_this_grid(valid_actions)
-            self._refresh(this_grid_actions)
-            this_grid_actions = self.filter_priority_to_finish(this_grid_actions)
-            if (3 == self.enemy_max_priority_to_finish(this_grid_actions) > self.max_priority_to_finish(
-                    this_grid_actions)):
-                this_grid_actions = self.filter_enemy_priority_to_finish(this_grid_actions)
+    def best_coor(self, valid_actions):
+        this_grid_actions = self.filter_for_this_grid(valid_actions)
+        self._refresh(this_grid_actions)
+        this_grid_actions = self.filter_priority_to_finish(this_grid_actions)
+        if (3 == self.enemy_max_priority_to_finish(this_grid_actions) > self.max_priority_to_finish(
+                this_grid_actions)):
+            this_grid_actions = self.filter_enemy_priority_to_finish(this_grid_actions)
 
-            print(self.m_grids, file=sys.stderr)
-            priority = self.priority_filter(this_grid_actions)
-            return priority.pop()
+        print(self.m_grids, file=sys.stderr)
+        priority = self.priority_filter(this_grid_actions)
+        return priority.pop()
 
-        def filter_enemy_priority_to_finish(self, actions):
-            max_priority = self.enemy_max_priority_to_finish(actions)
-            return set(x for x in actions if
-                       self.e_priority_to_finish.get((x.x, x.y), 0) == max_priority)  # todo: coors with method
+    def filter_enemy_priority_to_finish(self, actions):
+        max_priority = self.enemy_max_priority_to_finish(actions)
+        return set(x for x in actions if
+                   self.e_priority_to_finish.get((x.x, x.y), 0) == max_priority)  # todo: coors with method
 
-        def enemy_max_priority_to_finish(self, actions):
-            return max(self.e_priority_to_finish.get((x.x, x.y), 0) for x in actions)
+    def enemy_max_priority_to_finish(self, actions):
+        return max(self.e_priority_to_finish.get((x.x, x.y), 0) for x in actions)
 
-        def filter_priority_to_finish(self, actions):
-            max_priority = self.max_priority_to_finish(actions)
-            return set(x for x in actions if
-                       self.m_priority_to_finish.get((x.x, x.y), 0) == max_priority)  # todo: coors with method
+    def filter_priority_to_finish(self, actions):
+        max_priority = self.max_priority_to_finish(actions)
+        return set(x for x in actions if
+                   self.m_priority_to_finish.get((x.x, x.y), 0) == max_priority)  # todo: coors with method
 
-        def max_priority_to_finish(self, actions):
-            return max(self.m_priority_to_finish.get((x.x, x.y), 0) for x in actions)
+    def max_priority_to_finish(self, actions):
+        return max(self.m_priority_to_finish.get((x.x, x.y), 0) for x in actions)
 
-        def filter_for_this_grid(self, actions):
-            return set(x for x in actions if self.bx == int(x.x / 3) and self.by == int(x.y / 3))
+    def filter_for_this_grid(self, actions):
+        return set(x for x in actions if self.bx == int(x.x / 3) and self.by == int(x.y / 3))
 
-        def priority_filter(self, actions):
-            max_priority = self.max_priority(actions)
-            return set(x for x in actions if
-                       self.priority.get((x.x % 3, x.y % 3), 1) == max_priority)  # todo: coors with method
+    def priority_filter(self, actions):
+        max_priority = self.max_priority(actions)
+        return set(x for x in actions if
+                   self.priority.get((x.x % 3, x.y % 3), 1) == max_priority)  # todo: coors with method
 
-        def max_priority(self, actions):
-            return max(self.priority.get((x.x % 3, x.y % 3), 1) for x in actions)
+    def max_priority(self, actions):
+        return max(self.priority.get((x.x % 3, x.y % 3), 1) for x in actions)
 
 class TTT:
     def __init__(self):

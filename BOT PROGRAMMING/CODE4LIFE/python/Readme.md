@@ -1,0 +1,1 @@
+@copyright code4life-gold && code4life-silver https://github.com/Di0niz/

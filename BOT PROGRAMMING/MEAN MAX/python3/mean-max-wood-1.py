@@ -1,4 +1,3 @@
-# https://github.com/dghy/Contest-Mean_Max_Buggy_Road/blob/master/main.py
 import math
 import sys
 

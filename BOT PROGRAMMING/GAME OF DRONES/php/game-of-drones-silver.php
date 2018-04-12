@@ -1,4 +1,3 @@
-// got from https://github.com/niconoe-/Codingame/blob/master/2%20-%20Bots%20Fight/Game%20of%20Drones/PHP.php
 <?php
 namespace GameOfDrones;
 define('DEBUG', true);

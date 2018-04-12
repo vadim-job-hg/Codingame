@@ -1,0 +1,1 @@
+@copyright https://github.com/niconoe-/

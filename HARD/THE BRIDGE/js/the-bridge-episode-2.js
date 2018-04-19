@@ -1,5 +1,3 @@
-# https://www.codingame.com/ide/puzzle/the-bridge-episode-2
-# https://github.com/e1r0nd/codingame/blob/097966d46d6857eedb19bb9e2592f4d600b99703/(hard)%20The%20Bridge.js
 /**
  * The Bridge
  * https://www.codingame.com/training/hard/the-bridge-episode-2

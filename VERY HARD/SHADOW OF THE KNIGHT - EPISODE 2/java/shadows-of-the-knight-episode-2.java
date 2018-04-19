@@ -1,4 +1,3 @@
-# https://github.com/CyberLemonade/Codingame/blob/master/Very%20Hard/Shadows%20of%20The%20Knight%20-%20Episode%202.java
 import java.util.*;
 import java.io.*;
 import java.math.*;

@@ -44,8 +44,8 @@ class UnitType:
     COSTS = {0: 80, 1: 100, 2: 140}
 
 
-BUILD_ORDER = ['TOWER', 'BARRACKS-KNIGHT', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER',
-               'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER']
+BUILD_ORDER = ['MINE', 'MINE', 'MINE', 'BARRACKS-KNIGHT', 'TOWER', 'BARRACKS-ARCHER', 'BARRACKS-GIANT', 'TOWER',
+               'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER', 'TOWER']
 
 
 class Unit:
